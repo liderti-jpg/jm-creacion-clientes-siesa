@@ -755,25 +755,32 @@ async function onNB(){
     }else{console.log('[NIT F1] r.ok=false status:',r?.status);}
   }catch(e){console.log('[NIT F1] error:',e?.message||e);}
 
-  // Fuente 2 — felixmotta proxy
+  // Fuente 2 — api-colombia (CORS habilitado, datos RUES)
   if(!nombre){
     try{
-      console.log('[NIT F2] probando felixmotta...');
+      console.log('[NIT F2] probando api-colombia...');
       const r=await Promise.race([
-        fetch(`https://api.felixmotta.co/rues/nit/${n}`),
-        new Promise((_,j)=>setTimeout(()=>j('timeout'),4000))
+        fetch(`https://api-colombia.com/api/v1/Company/nit/${n}`),
+        new Promise((_,j)=>setTimeout(()=>j('timeout'),5000))
       ]);
-      if(r&&r.ok){const d=await r.json();console.log('[NIT F2] respuesta:',d);nombre=d.razonSocial||d.razon_social||d.nombre||null;}
-      else{console.log('[NIT F2] r.ok=false status:',r?.status);}
+      if(r&&r.ok){
+        const d=await r.json();
+        console.log('[NIT F2] respuesta:',d);
+        nombre=d.name||d.razonSocial||d.razon_social||d.nombre||null;
+      }else{console.log('[NIT F2] r.ok=false status:',r?.status);}
     }catch(e){console.log('[NIT F2] error:',e?.message||e);}
   }
 
-  // Fuente 3 — webhook n8n relay
+  // Fuente 3 — webhook n8n relay (misma URL crear-cliente, action=nit, POST)
   if(!nombre){
     try{
       console.log('[NIT F3] probando n8n relay...');
       const r=await Promise.race([
-        fetch(`https://jotamundial2.app.n8n.cloud/webhook/consulta-nit?nit=${n}`),
+        fetch(`https://jotamundial2.app.n8n.cloud/webhook/crear-cliente`,{
+          method:'POST',
+          headers:{'Content-Type':'application/json'},
+          body:JSON.stringify({action:'nit',nit:n})
+        }),
         new Promise((_,j)=>setTimeout(()=>j('timeout'),8000))
       ]);
       if(r&&r.ok){
