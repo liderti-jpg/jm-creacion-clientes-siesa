@@ -250,10 +250,11 @@ body{font-family:'Inter',sans-serif;background:var(--ink);height:100%}
 .f-hdr-nm{color:rgba(255,255,255,.55);font-size:10px;max-width:75px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
 .p-track{background:rgba(255,255,255,.1);height:3px;flex-shrink:0}
 .p-fill{height:3px;background:linear-gradient(90deg,var(--gold),var(--gold2));transition:width .32s;width:0%}
-.f-scroll{flex:1;overflow-y:auto;padding:16px 14px calc(env(safe-area-inset-bottom,0px)+130px)}
+.f-scroll{flex:1;overflow-y:auto;padding:16px 14px 20px}
 .f-scroll::-webkit-scrollbar{display:none}
 @media(min-width:768px){
-  .f-scroll{padding:20px 28px calc(env(safe-area-inset-bottom,0px)+110px);max-width:760px;margin:0 auto;width:100%;}
+  .f-scroll{padding:20px 28px 24px;}
+  .f-scroll>*{max-width:720px;margin-left:auto;margin-right:auto;}
 }
 .fc{background:#fff;border-radius:var(--r);border:1.5px solid var(--border);box-shadow:0 2px 10px rgba(7,15,30,.05);margin-bottom:12px;overflow:hidden}
 .fc-h{padding:13px 16px;border-bottom:1px solid var(--border);display:flex;align-items:center;gap:10px}
@@ -308,7 +309,7 @@ select.fi{background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.o
 .ii{font-size:17px;display:block;margin-bottom:3px}
 .il{font-size:10px;font-weight:700;color:var(--text2);text-transform:uppercase}
 .ib.active .il{color:var(--ink2)}
-.f-foot{position:absolute;bottom:0;left:0;right:0;background:#fff;border-top:1.5px solid var(--border);padding:12px 14px;padding-bottom:calc(env(safe-area-inset-bottom,0px)+12px);box-shadow:0 -4px 18px rgba(7,15,30,.07);z-index:10}
+.f-foot{flex-shrink:0;background:#fff;border-top:1.5px solid var(--border);padding:12px 14px;padding-bottom:calc(env(safe-area-inset-bottom,0px)+12px);box-shadow:0 -4px 18px rgba(7,15,30,.07);z-index:10}
 @media(min-width:768px){
   .f-foot{padding:16px 28px;padding-bottom:calc(env(safe-area-inset-bottom,0px)+16px);}
   .f-foot .bsub{max-width:600px;margin:0 auto;display:flex;}
@@ -480,7 +481,7 @@ select.fi{background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.o
         </div>
         <div class="f2" id="rNit" style="display:none">
           <div class="ff"><label>NIT <span class="req">*</span></label>
-            <div class="nw"><input class="fi" id="nit" type="tel" placeholder="901234567" maxlength="15" oninput="oN(this);onNInput(this)" onkeydown="if(event.key==='Enter'){event.preventDefault();onNB()}" onblur="onNB()"><div class="nspin" id="nSpin"></div><div class="nico" id="nIco"></div></div>
+            <div class="nw"><input class="fi" id="nit" type="tel" placeholder="901234567" maxlength="15" oninput="onNInput(this)" onkeydown="if(event.key==='Enter'){event.preventDefault();onNB()}" onblur="onNB()"><div class="nspin" id="nSpin"></div><div class="nico" id="nIco"></div></div>
             <div class="ferr">Ingresa el NIT</div>
           </div>
           <div class="ff"><label>Dígito verif.</label><input class="fi" id="dv" type="tel" maxlength="1" readonly style="color:var(--text3)" placeholder="Auto"><div class="fhint">Automático</div></div>
@@ -713,22 +714,24 @@ const up=el=>el.value=el.value.toUpperCase();
 const oN=el=>el.value=el.value.replace(/\D/g,'');
 function cdv(n){if(!n)return'';const p=[3,7,13,17,19,23,29,37,41,43,47,53,59,67,71];let s=0;n.split('').reverse().forEach((d,i)=>s+=parseInt(d)*(p[i%15]));const r=s%11;return r>1?String(11-r):String(r);}
 function lMuni(){const d=gv('dep'),s=document.getElementById('ciu');s.innerHTML='<option value="">Selecciona ciudad...</option>';if(!d||!MU[d])return;MU[d].forEach(([c,n])=>{const o=document.createElement('option');o.value=c;o.textContent=n;s.appendChild(o);});}
-let _nitTimer=null;
+let _nitTimer=null,_nitBusy=false;
 function onNInput(el){
   oN(el);
   const n=el.value.replace(/\D/g,'');
   document.getElementById('dv').value=cdv(n);
   clearTimeout(_nitTimer);
-  if(n.length>=6){
-    _nitTimer=setTimeout(()=>onNB(),600);
+  document.getElementById('nIco').style.display='none';
+  if(n.length>=7){
+    _nitTimer=setTimeout(()=>onNB(),700);
   }
 }
 async function onNB(){
   const n=gv('nit').replace(/\D/g,'');
   document.getElementById('dv').value=cdv(n);
   if(!n||n.length<6)return;
-  // Evitar rellamada si ya está buscando
-  if(document.getElementById('nSpin').style.display==='block')return;
+  if(_nitBusy)return;
+  _nitBusy=true;
+  clearTimeout(_nitTimer);
   document.getElementById('nSpin').style.display='block';
   document.getElementById('nIco').style.display='none';
   document.getElementById('razon').classList.remove('ok');
@@ -736,17 +739,16 @@ async function onNB(){
 
   let nombre=null;
 
-  // Fuente 1 — datos.gov.co (a veces tiene CORS habilitado)
+  // Fuente 1 — datos.gov.co
   try{
     const r=await Promise.race([
-      fetch(`https://www.datos.gov.co/resource/x8dy-gf8y.json?nit=${n}`,{mode:'cors'}),
+      fetch(`https://www.datos.gov.co/resource/x8dy-gf8y.json?nit=${n}`),
       new Promise((_,j)=>setTimeout(()=>j('t'),4000))
     ]);
     if(r&&r.ok){
       const arr=await r.json();
-      if(arr&&arr.length>0){
+      if(arr&&arr.length>0)
         nombre=arr[0].razon_social||arr[0].nombre_contribuyente||arr[0].nombre||null;
-      }
     }
   }catch(e){}
 
@@ -761,7 +763,7 @@ async function onNB(){
     }catch(e){}
   }
 
-  // Fuente 3 — webhook n8n relay (principal cuando las otras fallan)
+  // Fuente 3 — webhook n8n relay
   if(!nombre){
     try{
       const r=await Promise.race([
@@ -769,16 +771,15 @@ async function onNB(){
         new Promise((_,j)=>setTimeout(()=>j('t'),8000))
       ]);
       if(r&&r.ok){
-        const raw=await r.text();
         let d={};
-        try{d=JSON.parse(raw);}catch(e){}
-        // Manejar múltiples formas de respuesta del webhook
+        try{d=JSON.parse(await r.text());}catch(e){}
         nombre=d.razonSocial||d.razon_social||d.nombre||d.nombre_contribuyente||
-                (Array.isArray(d)&&d[0]&&(d[0].razonSocial||d[0].razon_social||d[0].nombre))||null;
+               (Array.isArray(d)&&d[0]&&(d[0].razonSocial||d[0].razon_social||d[0].nombre))||null;
       }
     }catch(e){}
   }
 
+  _nitBusy=false;
   document.getElementById('nSpin').style.display='none';
   const ico=document.getElementById('nIco');
   if(nombre){
@@ -796,7 +797,7 @@ async function onNB(){
   }else{
     ico.textContent='✎';
     ico.style.cssText='display:block;color:var(--orange);font-size:14px;position:absolute;right:11px;top:50%;transform:translateY(-50%)';
-    showToast('NIT no encontrado — ingresa la razón social manualmente','warn');
+    showToast('NIT no encontrado — ingresa la razón social','warn');
     setTimeout(()=>document.getElementById('razon')?.focus(),300);
   }
 }
@@ -868,7 +869,7 @@ async function enviar(){
 }
 function cerrarModal(){document.getElementById('modal').classList.remove('open');}
 function nuevoReg(){
-  cerrarModal();mUpd=false;canal='';
+  cerrarModal();mUpd=false;canal='';_nitBusy=false;clearTimeout(_nitTimer);
   document.querySelectorAll('.fi').forEach(el=>{if(el.tagName==='SELECT')el.selectedIndex=0;else el.value='';el.classList.remove('err','ok');});
   ['bTrad','bDig'].forEach(id=>document.getElementById(id).classList.remove('st','sd'));
   inds.cli=true;inds.prov=false;inds.emp=false;
