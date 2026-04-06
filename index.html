@@ -747,7 +747,8 @@ function armarBody(){
   const tipo=gv('tipoId'),esN=tipo==='N';
   const nit=esN?gv('nit'):gv('docN'),dVal=esN?gv('dv'):'';
   const nat=gv('tipoT')==='2';
-  const razon=nat?'':gv('razon'),a1=nat?gv('ap1'):'',a2=nat?gv('ap2'):'',nms=nat?gv('noms'):'';
+  const a1=nat?gv('ap1'):'',a2=nat?gv('ap2'):'',nms=nat?gv('noms'):'';
+  const razon=nat?[a1,a2,nms].filter(Boolean).join(' '):gv('razon');
   const ne=gv('nomE')||razon||[a1,a2,nms].filter(Boolean).join(' ');
   // Fecha nacimiento: para naturales usar la ingresada, para jurídicas placeholder
   let fechaNac='19000101';
