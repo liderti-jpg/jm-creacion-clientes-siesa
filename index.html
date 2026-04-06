@@ -43,11 +43,15 @@ body{font-family:'Inter',sans-serif;background:var(--ink);height:100%}
 .w-hero{
   position:relative;z-index:1;flex-shrink:0;
   background:linear-gradient(160deg,var(--ink) 0%,var(--ink2) 60%,#1E3A6E 100%);
-  padding:calc(env(safe-area-inset-top,0px)+52px) 28px 44px;
+  padding:64px 28px 48px;
   display:flex;flex-direction:column;align-items:center;
   border-radius:0 0 36px 36px;
   box-shadow:0 12px 40px rgba(7,15,30,.2);
-  overflow:hidden;
+  overflow:visible;
+}
+/* En móvil con notch, sumar el safe-area encima */
+@supports(padding-top:env(safe-area-inset-top)){
+  .w-hero{padding-top:max(64px,calc(env(safe-area-inset-top)+48px))}
 }
 /* Glow dorado dentro del hero */
 .w-hero:before{
@@ -90,7 +94,7 @@ body{font-family:'Inter',sans-serif;background:var(--ink);height:100%}
 .w-body{
   position:relative;z-index:1;
   flex:1;overflow-y:auto;
-  padding:28px clamp(14px,4vw,32px) calc(env(safe-area-inset-bottom,0px)+24px);
+  padding:32px clamp(16px,4vw,40px) calc(env(safe-area-inset-bottom,0px)+24px);
   max-width:640px;
   width:100%;
   margin:0 auto;
@@ -100,7 +104,7 @@ body{font-family:'Inter',sans-serif;background:var(--ink);height:100%}
 .w-sec-t{
   font-size:10px;font-weight:700;color:var(--text3);
   text-transform:uppercase;letter-spacing:1.2px;
-  margin-bottom:14px;margin-top:6px;
+  margin-bottom:16px;margin-top:0;
 }
 
 /* Módulo card — fondo blanco sobre crema */
