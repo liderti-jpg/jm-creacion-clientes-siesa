@@ -513,7 +513,6 @@ select.fi{background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.o
             <div class="ff"><label>Segundo apellido</label><input class="fi" id="ap2" type="text" placeholder="LÓPEZ" oninput="up(this);sNE()"></div>
           </div>
           <div class="ff"><label>Nombres <span class="req">*</span></label><input class="fi" id="noms" type="text" placeholder="CARLOS ANDRÉS" oninput="up(this);sNE()"><div class="ferr">Requerido</div></div>
-          <div class="ff"><label>Fecha de nacimiento <span class="req">*</span></label><input class="fi" id="fechaNac" type="date" max="2010-12-31"><div class="fhint">Requerido por SIESA para personas naturales</div><div class="ferr">Ingresa la fecha de nacimiento</div></div>
         </div>
         <div class="ff"><label>Nombre comercial</label><input class="fi" id="nomE" type="text" placeholder="Automático" oninput="up(this)"><div class="fhint">Como aparece en facturas</div></div>
         <div class="ff"><label>Clasificación <span class="req">*</span></label>
@@ -739,7 +738,7 @@ function validar(){
   };
   chk('tipoId');
   if(gv('tipoId')==='N')chk('nit');else chk('docN');
-  if(gv('tipoT')==='2'){chk('ap1');chk('noms');chk('fechaNac');}else chk('razon');
+  if(gv('tipoT')==='2'){chk('ap1');chk('noms');}else chk('razon');
   if(!ok)showToast('Completa los campos obligatorios ✱','warn');
   return ok;
 }
@@ -750,14 +749,8 @@ function armarBody(){
   const a1=nat?gv('ap1'):'',a2=nat?gv('ap2'):'',nms=nat?gv('noms'):'';
   const razon=nat?[a1,a2,nms].filter(Boolean).join(' '):gv('razon');
   const ne=gv('nomE')||razon||[a1,a2,nms].filter(Boolean).join(' ');
-  // Fecha nacimiento: para naturales usar la ingresada, para jurídicas placeholder
-  let fechaNac='19000101';
-  if(nat){
-    const fv=document.getElementById('fechaNac')?.value; // YYYY-MM-DD
-    if(fv&&fv.length===10){
-      fechaNac=fv.substring(0,4)+fv.substring(5,7)+fv.substring(8,10); // YYYYMMDD
-    }
-  }
+  // Fecha nacimiento hardcodeada - requerida por SIESA
+  const fechaNac='19000101';
   return{"Inicial":[{"F_CIA":CIA}],"Terceros":[{
     "F_CIA":CIA,"F_ACTUALIZA_REG":mUpd?"1":"0",
     "F200_ID":nit,"F200_NIT":nit,"F200_DV_NIT":dVal,
