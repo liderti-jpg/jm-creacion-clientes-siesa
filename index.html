@@ -34,99 +34,105 @@ body{font-family:'Inter',sans-serif;background:var(--ink);height:100%}
 .screen.off-right{transform:translateX(100%);opacity:0;pointer-events:none}
 
 /* ── WELCOME / HUB ── */
-#sw{background:var(--cream);overflow:hidden}
+#sw{background:var(--cream);overflow:hidden;display:flex;flex-direction:column}
 
-/* Canvas de partículas antigravity */
 #wCanvas{position:absolute;inset:0;width:100%;height:100%;pointer-events:none;z-index:0}
 
-/* Hero superior — fondo navy con curva */
+/* Hero horizontal: logo izquierda, texto derecha */
 .w-hero{
   position:relative;z-index:1;flex-shrink:0;
-  background:linear-gradient(160deg,var(--ink) 0%,var(--ink2) 60%,#1E3A6E 100%);
-  padding:64px 28px 48px;
-  display:flex;flex-direction:column;align-items:center;
-  border-radius:0 0 36px 36px;
-  box-shadow:0 12px 40px rgba(7,15,30,.2);
-  overflow:visible;
+  background:linear-gradient(135deg,var(--ink) 0%,var(--ink2) 55%,#1E3A6E 100%);
+  padding:20px 24px 28px;
+  display:flex;flex-direction:column;
+  border-radius:0 0 32px 32px;
+  box-shadow:0 10px 36px rgba(7,15,30,.22);
+  overflow:hidden;
 }
-/* En móvil con notch, sumar el safe-area encima */
 @supports(padding-top:env(safe-area-inset-top)){
-  .w-hero{padding-top:max(64px,calc(env(safe-area-inset-top)+48px))}
+  .w-hero{padding-top:max(20px,calc(env(safe-area-inset-top)+14px))}
 }
-/* Glow dorado dentro del hero */
 .w-hero:before{
-  content:'';position:absolute;bottom:-40px;left:50%;transform:translateX(-50%);
-  width:200px;height:100px;border-radius:50%;
-  background:radial-gradient(circle,rgba(184,134,11,.18),transparent 70%);
+  content:'';position:absolute;right:-30px;top:-30px;
+  width:180px;height:180px;border-radius:50%;
+  background:radial-gradient(circle,rgba(184,134,11,.12),transparent 70%);
+}
+/* Fila logo + texto */
+.w-hero-row{
+  display:flex;align-items:center;gap:16px;
+  position:relative;z-index:1;
 }
 .w-logo{
-  height:64px;width:auto;
-  filter:drop-shadow(0 6px 18px rgba(184,134,11,.35));
+  height:56px;width:auto;flex-shrink:0;
+  filter:drop-shadow(0 4px 12px rgba(184,134,11,.4));
   animation:fl 4s ease-in-out infinite;
-  position:relative;z-index:1;
-  margin-bottom:16px;
-  /* Asegurar que no se corte en ningún viewport */
-  max-height:min(64px, 9vw);
-  min-height:48px;
 }
-@keyframes fl{0%,100%{transform:translateY(0)}50%{transform:translateY(-8px)}}
+@keyframes fl{0%,100%{transform:translateY(0)}50%{transform:translateY(-6px)}}
+.w-hero-text{flex:1}
 .w-title{
   font-family:'Playfair Display',serif;
-  font-size:clamp(22px,4vw,34px);
-  font-weight:700;color:#fff;text-align:center;line-height:1.15;
-  margin-bottom:5px;position:relative;z-index:1;
+  font-size:clamp(20px,3.5vw,30px);
+  font-weight:700;color:#fff;line-height:1.15;margin-bottom:3px;
 }
 .w-title em{color:var(--gold2);font-style:normal}
 .w-sub{
-  font-size:clamp(10px,1.5vw,12px);
-  color:rgba(255,255,255,.38);text-align:center;
-  letter-spacing:1.2px;text-transform:uppercase;
-  position:relative;z-index:1;
+  font-size:clamp(9px,1.2vw,11px);
+  color:rgba(255,255,255,.38);
+  letter-spacing:1px;text-transform:uppercase;
 }
 .w-divider{
-  width:44px;height:2px;
-  background:linear-gradient(90deg,transparent,var(--gold2),transparent);
-  border-radius:2px;margin:12px auto 0;
+  width:36px;height:2px;
+  background:linear-gradient(90deg,var(--gold2),rgba(212,160,23,.3));
+  border-radius:2px;margin:14px 0 0;
   position:relative;z-index:1;
 }
 
-/* Área de módulos — fondo crema/blanco */
+/* Selector de asesor integrado en el hero */
+.w-asesor-wrap{
+  position:relative;z-index:1;margin-top:16px;
+}
+.w-asesor-label{
+  font-size:9px;font-weight:700;color:rgba(255,255,255,.4);
+  text-transform:uppercase;letter-spacing:1px;margin-bottom:6px;
+}
+.w-asesor-sel{
+  width:100%;background:rgba(255,255,255,.09);
+  border:1.5px solid rgba(255,255,255,.15);
+  border-radius:12px;padding:12px 36px 12px 14px;
+  font-size:14px;font-weight:600;color:#fff;
+  font-family:'Inter',sans-serif;
+  outline:none;-webkit-appearance:none;appearance:none;
+  cursor:pointer;transition:.18s;
+  background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8'%3E%3Cpath d='M1 1l5 5 5-5' stroke='rgba(255,255,255,.5)' stroke-width='1.5' fill='none' stroke-linecap='round'/%3E%3C/svg%3E");
+  background-repeat:no-repeat;background-position:right 12px center;
+}
+.w-asesor-sel:focus{border-color:var(--gold2);background-color:rgba(255,255,255,.13)}
+.w-asesor-sel option{background:var(--ink);color:#fff}
+
+/* Área de módulos */
 .w-body{
-  position:relative;z-index:1;
-  flex:1;overflow-y:auto;
-  padding:32px clamp(16px,4vw,40px) calc(env(safe-area-inset-bottom,0px)+24px);
-  max-width:640px;
-  width:100%;
-  margin:0 auto;
+  position:relative;z-index:1;flex:1;overflow-y:auto;
+  padding:24px clamp(14px,4vw,36px) calc(env(safe-area-inset-bottom,0px)+20px);
+  max-width:680px;width:100%;margin:0 auto;
 }
 .w-body::-webkit-scrollbar{display:none}
-
 .w-sec-t{
   font-size:10px;font-weight:700;color:var(--text3);
   text-transform:uppercase;letter-spacing:1.2px;
-  margin-bottom:16px;margin-top:0;
+  margin-bottom:14px;
 }
-
-/* Módulo card — fondo blanco sobre crema */
 .w-mod{
-  background:#fff;
-  border:1.5px solid var(--border);
-  border-radius:18px;padding:18px;
-  margin-bottom:11px;
+  background:#fff;border:1.5px solid var(--border);
+  border-radius:16px;padding:16px;margin-bottom:10px;
   cursor:pointer;transition:all .22s;
-  display:flex;align-items:center;gap:15px;
-  position:relative;overflow:hidden;
-  box-shadow:0 2px 16px rgba(7,15,30,.06);
+  display:flex;align-items:center;gap:14px;
+  box-shadow:0 2px 14px rgba(7,15,30,.06);
 }
-.w-mod:hover{box-shadow:0 6px 28px rgba(7,15,30,.1);transform:translateY(-1px)}
-.w-mod:active{transform:scale(.98) translateY(0);box-shadow:0 2px 8px rgba(7,15,30,.08)}
-/* Primer módulo activo — acento dorado en el borde izquierdo */
+.w-mod:hover{box-shadow:0 6px 24px rgba(7,15,30,.1);transform:translateY(-1px)}
+.w-mod:active{transform:scale(.98) translateY(0)}
 .w-mod-active{border-left:4px solid var(--gold2)}
-.w-mod-ico{
-  width:50px;height:50px;border-radius:14px;
-  display:flex;align-items:center;justify-content:center;
-  font-size:23px;flex-shrink:0;
-}
+.w-mod.disabled{opacity:.48;cursor:not-allowed}
+.w-mod.disabled:hover{transform:none;box-shadow:0 2px 14px rgba(7,15,30,.06)}
+.w-mod-ico{width:48px;height:48px;border-radius:13px;display:flex;align-items:center;justify-content:center;font-size:22px;flex-shrink:0}
 .wic-g{background:linear-gradient(135deg,#E6F7F2,#C8EFE4)}
 .wic-b{background:linear-gradient(135deg,var(--blue3),#D4E4FF)}
 .wic-o{background:linear-gradient(135deg,#FFF8E7,#FFE9A0)}
@@ -134,19 +140,12 @@ body{font-family:'Inter',sans-serif;background:var(--ink);height:100%}
 .w-mod-inf{flex:1}
 .w-mod-t{font-size:14px;font-weight:700;color:var(--text);margin-bottom:2px}
 .w-mod-s{font-size:11px;color:var(--text3);line-height:1.4}
-.w-mod-badge{
-  display:inline-block;font-size:9px;font-weight:700;
-  padding:2px 8px;border-radius:99px;margin-top:5px;letter-spacing:.5px;
-}
+.w-mod-badge{display:inline-block;font-size:9px;font-weight:700;padding:2px 8px;border-radius:99px;margin-top:5px;letter-spacing:.5px}
 .wb-active{background:linear-gradient(135deg,var(--gold),var(--gold2));color:#fff}
 .wb-soon{background:#ECEEF5;color:var(--text3)}
 .w-mod-arr{color:var(--text3);font-size:18px;flex-shrink:0;transition:.2s}
-.w-mod:hover .w-mod-arr{color:var(--gold2);transform:translateX(2px)}
-
-.w-ver{
-  text-align:center;padding:10px 0 2px;
-  font-size:10px;color:var(--text3);letter-spacing:.5px;
-}
+.w-mod:not(.disabled):hover .w-mod-arr{color:var(--gold2);transform:translateX(2px)}
+.w-ver{text-align:center;padding:10px 0 2px;font-size:10px;color:var(--text3);letter-spacing:.4px}
 
 /* ── ASESOR SCREEN ── */
 #sa{background:var(--ink)}
@@ -326,22 +325,33 @@ select.fi{background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.o
 
 <!-- S1: WELCOME / HUB -->
 <div class="screen" id="sw">
-  <!-- Canvas animación antigravity -->
   <canvas id="wCanvas"></canvas>
 
-  <!-- Hero superior navy con logo -->
   <div class="w-hero">
-    <img class="w-logo" src="https://i.ibb.co/gbVD1bq5/logo-JOTA-MUNDIAL-SAS-original.png" alt="Jota Mundial SAS">
-    <div class="w-title">Jota Mundial <em>SAS</em></div>
-    <div class="w-sub">Sistema de gestión comercial</div>
+    <!-- Fila: logo izquierda + título derecha -->
+    <div class="w-hero-row">
+      <img class="w-logo" src="https://i.ibb.co/gbVD1bq5/logo-JOTA-MUNDIAL-SAS-original.png" alt="Jota Mundial SAS">
+      <div class="w-hero-text">
+        <div class="w-title">Jota Mundial <em>SAS</em></div>
+        <div class="w-sub">Sistema de gestión comercial</div>
+      </div>
+    </div>
     <div class="w-divider"></div>
+
+    <!-- Selector de asesor dentro del hero -->
+    <div class="w-asesor-wrap">
+      <div class="w-asesor-label">¿Quién eres? — Selecciona tu nombre</div>
+      <select class="w-asesor-sel" id="wAsesorSel" onchange="onSelAsesor(this.value)">
+        <option value="">— Elige tu nombre —</option>
+      </select>
+    </div>
   </div>
 
-  <!-- Cuerpo blanco con módulos -->
+  <!-- Módulos -->
   <div class="w-body">
     <div class="w-sec-t">¿Qué deseas hacer?</div>
 
-    <div class="w-mod w-mod-active" onclick="irAsesor('clientes')">
+    <div class="w-mod w-mod-active" id="modClientes" onclick="lanzarModulo('clientes')">
       <div class="w-mod-ico wic-g">👤</div>
       <div class="w-mod-inf">
         <div class="w-mod-t">Creación de clientes</div>
@@ -351,7 +361,7 @@ select.fi{background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.o
       <div class="w-mod-arr">›</div>
     </div>
 
-    <div class="w-mod" style="opacity:.5;cursor:not-allowed" onclick="showToast('Próximamente disponible','warn')">
+    <div class="w-mod disabled" onclick="showToast('Próximamente disponible','warn')">
       <div class="w-mod-ico wic-b">📦</div>
       <div class="w-mod-inf">
         <div class="w-mod-t">Pedido de venta</div>
@@ -361,7 +371,7 @@ select.fi{background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.o
       <div class="w-mod-arr">›</div>
     </div>
 
-    <div class="w-mod" style="opacity:.5;cursor:not-allowed" onclick="showToast('Próximamente disponible','warn')">
+    <div class="w-mod disabled" onclick="showToast('Próximamente disponible','warn')">
       <div class="w-mod-ico wic-o">📊</div>
       <div class="w-mod-inf">
         <div class="w-mod-t">Mis ventas</div>
@@ -371,7 +381,7 @@ select.fi{background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.o
       <div class="w-mod-arr">›</div>
     </div>
 
-    <div class="w-mod" style="opacity:.5;cursor:not-allowed" onclick="showToast('Próximamente disponible','warn')">
+    <div class="w-mod disabled" onclick="showToast('Próximamente disponible','warn')">
       <div class="w-mod-ico wic-p">🏭</div>
       <div class="w-mod-inf">
         <div class="w-mod-t">Entrada de inventario</div>
@@ -381,94 +391,20 @@ select.fi{background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.o
       <div class="w-mod-arr">›</div>
     </div>
 
+    <!-- Pendientes offline en hub -->
+    <div class="sp-pend" id="spHub">
+      <div class="sp-inner">
+        <div style="font-weight:700;font-size:13px;color:var(--orange);margin-bottom:4px">📋 Pendientes de enviar</div>
+        <div style="font-size:12px;color:var(--text2);line-height:1.6" id="pListHub"></div>
+        <button onclick="sync()" style="margin-top:8px;background:var(--orange);color:#fff;border:none;border-radius:8px;padding:6px 13px;font-size:12px;font-weight:700;cursor:pointer;font-family:'Inter',sans-serif">↑ Sincronizar ahora</button>
+      </div>
+    </div>
+
     <div class="w-ver">Jota Mundial SAS · SIESA SBS Producción · v2.0 · 2026</div>
   </div>
 </div>
 
-<!-- S2: ASESOR -->
-<div class="screen hidden" id="sa">
-  <div class="sa-hdr">
-    <div class="sa-hdr-top">
-      <div class="sa-back" onclick="goTo('sw','l')" title="Volver">‹</div>
-      <div class="sa-hdr-center">
-        <img class="sa-logo" src="https://i.ibb.co/gbVD1bq5/logo-JOTA-MUNDIAL-SAS-original.png" alt="JM">
-      </div>
-    </div>
-    <div class="sa-title">¿Quién eres?</div>
-    <div class="sa-sub">Selecciona tu nombre para continuar</div>
-  </div>
-  <div class="sa-scroll"><div class="sa-grid" id="asGrid"></div></div>
-</div>
-
-<!-- S3: MENU -->
-<div class="screen hidden" id="sm">
-  <div class="m-hdr">
-    <div class="m-hdr-l">
-      <img class="m-logo" src="https://i.ibb.co/gbVD1bq5/logo-JOTA-MUNDIAL-SAS-original.png" alt="JM">
-      <div><div class="m-hdr-t">JM Apps</div><span class="m-hdr-s">SIESA SBS · Producción</span></div>
-    </div>
-    <div class="m-chip" onclick="cambiarAsesor()">
-      <div class="m-chip-av" id="mAv"></div>
-      <span class="m-chip-name" id="mNm"></span>
-      <span class="pdot" id="pdot"></span>
-    </div>
-  </div>
-  <div class="m-scroll">
-    <div class="m-greet">
-      <div class="mg-sal" id="mgSal">Bienvenido</div>
-      <div class="mg-nom" id="mgNom"></div>
-      <div class="mg-fec" id="mgFec"></div>
-      <div class="mg-cod" id="mgCod"></div>
-    </div>
-    <div class="m-sec-t">Módulos disponibles</div>
-    <div class="mod" onclick="irForm()">
-      <div class="mod-ico ic-g">👤</div>
-      <div class="mod-inf">
-        <div class="mod-t">Crear nuevo cliente</div>
-        <div class="mod-s">Registra un cliente directamente en SIESA desde el campo</div>
-        <span class="badge b-active">ACTIVO</span>
-      </div>
-      <div class="mod-arr">›</div>
-    </div>
-    <div class="mod" style="opacity:.55;cursor:not-allowed" onclick="showToast('Próximamente disponible','warn')">
-      <div class="mod-ico ic-b">📦</div>
-      <div class="mod-inf">
-        <div class="mod-t">Crear pedido de venta</div>
-        <div class="mod-s">Registra pedidos directamente desde el campo</div>
-        <span class="badge b-soon">PRÓXIMAMENTE</span>
-      </div>
-      <div class="mod-arr">›</div>
-    </div>
-    <div class="mod" style="opacity:.55;cursor:not-allowed" onclick="showToast('Próximamente disponible','warn')">
-      <div class="mod-ico ic-o">📊</div>
-      <div class="mod-inf">
-        <div class="mod-t">Ver mis ventas</div>
-        <div class="mod-s">Consulta tu dashboard de ventas en tiempo real</div>
-        <span class="badge b-soon">PRÓXIMAMENTE</span>
-      </div>
-      <div class="mod-arr">›</div>
-    </div>
-    <div class="mod" style="opacity:.55;cursor:not-allowed" onclick="showToast('Próximamente disponible','warn')">
-      <div class="mod-ico ic-p">🏭</div>
-      <div class="mod-inf">
-        <div class="mod-t">Entrada de inventario</div>
-        <div class="mod-s">Registra recepciones de mercancía desde bodega</div>
-        <span class="badge b-soon">PRÓXIMAMENTE</span>
-      </div>
-      <div class="mod-arr">›</div>
-    </div>
-    <div class="sp-pend" id="spMenu">
-      <div class="sp-inner">
-        <div style="font-weight:700;font-size:13px;color:var(--orange);margin-bottom:4px">📋 Pendientes de enviar</div>
-        <div style="font-size:12px;color:var(--text2);line-height:1.6" id="pListMenu"></div>
-        <button onclick="sync()" style="margin-top:8px;background:var(--orange);color:#fff;border:none;border-radius:8px;padding:6px 13px;font-size:12px;font-weight:700;cursor:pointer;font-family:'Inter',sans-serif">↑ Sincronizar ahora</button>
-      </div>
-    </div>
-    <div style="text-align:center;padding:14px 0 2px;font-size:10px;color:var(--text3);letter-spacing:.4px">Jota Mundial SAS · SIESA SBS Producción · v2.0 · 2026</div>
-  </div>
-</div>
-
-<!-- S4: FORM -->
+<!-- S3: FORM -->
 <div class="screen hidden" id="sf">
   <div class="f-hdr">
     <div class="f-back" onclick="irMenu()">‹</div>
@@ -662,36 +598,57 @@ const ini=n=>{
   const p=n.split(' ');return(p[0]?.[0]||'')+(p[2]?.[0]||p[1]?.[0]||'');
 };const ape=n=>n==='JOTA MUNDIAL SAS'?'JOTA MUNDIAL':n.split(' ').slice(0,2).join(' ');
 let moduloDest='clientes';
-function irAsesor(modulo){
-  moduloDest=modulo||'clientes';
-  try{const s=localStorage.getItem('jm_as');if(s){asesor=JSON.parse(s);updUI();goTo('sm','r');return;}}catch(e){}
-  buildGrid();goTo('sa','r');
+
+// Poblar el selector de asesores en el hub
+function initAsesorSel(){
+  const sel=document.getElementById('wAsesorSel');
+  AS.forEach((a,i)=>{
+    const o=document.createElement('option');
+    o.value=a.c;
+    o.textContent=`${ape(a.n)}  (Cód. ${a.c})`;
+    sel.appendChild(o);
+  });
+  // Si había asesor guardado, preseleccionarlo
+  try{
+    const s=localStorage.getItem('jm_as');
+    if(s){asesor=JSON.parse(s);sel.value=asesor.c;updUI();}
+  }catch(e){}
 }
-function buildGrid(){
-  document.getElementById('asGrid').innerHTML=AS.map((a,i)=>`
-    <div class="as-card" onclick="selAs('${a.c}')">
-      <div class="av-wrap">
-        <div class="av av${i}">${ini(a.n)}</div>
-      </div>
-      <div class="as-name">${ape(a.n)}</div>
-      <div class="as-code">Cód. ${a.c}</div>
-    </div>`).join('');
+
+function onSelAsesor(cod){
+  if(!cod){asesor=null;localStorage.removeItem('jm_as');updUI();return;}
+  asesor=AS.find(a=>a.c===cod);
+  localStorage.setItem('jm_as',JSON.stringify(asesor));
+  updUI();
 }
-function selAs(c){asesor=AS.find(a=>a.c===c);localStorage.setItem('jm_as',JSON.stringify(asesor));updUI();goTo('sm','r');}
+
+function lanzarModulo(modulo){
+  if(!asesor){
+    showToast('Primero selecciona tu nombre arriba ↑','warn');
+    document.getElementById('wAsesorSel').focus();
+    return;
+  }
+  moduloDest=modulo;
+  if(modulo==='clientes') goTo('sf','r');
+}
+
+function irMenu(){cerrarModal();goTo('sw','l');}
+function irForm(){if(!asesor){showToast('Selecciona tu nombre primero','warn');return;}goTo('sf','r');}
+
 function updUI(){
   if(!asesor)return;
-  const i=ini(asesor.n),idx=AS.findIndex(a=>a.c===asesor.c),cls=`av${idx}`;
-  const set=(avId,nmId)=>{const e=document.getElementById(avId);if(e){e.textContent=i;e.className=e.className.replace(/av\d/,'');e.classList.add(cls);}if(nmId)document.getElementById(nmId).textContent=ape(asesor.n);};
-  set('mAv','mNm');set('fAv','fNm');
-  const h=new Date().getHours();
-  document.getElementById('mgSal').textContent=h<12?'Buenos días ☀️':h<18?'Buenas tardes 🌤':'Buenas noches 🌙';
-  document.getElementById('mgNom').textContent=ape(asesor.n);
-  document.getElementById('mgFec').textContent=new Date().toLocaleDateString('es-CO',{weekday:'long',day:'numeric',month:'long',year:'numeric'});
-  document.getElementById('mgCod').textContent=`ASESOR ${asesor.c} · SIESA SBS PRODUCCIÓN`;
+  const idx=AS.findIndex(a=>a.c===asesor.c),cls=`av${idx}`;
+  // Header del formulario
+  const fav=document.getElementById('fAv');
+  if(fav){fav.textContent=ini(asesor.n);fav.className=fav.className.replace(/av\d+/g,'').trim()+' '+cls;}
+  const fnm=document.getElementById('fNm');
+  if(fnm)fnm.textContent=ape(asesor.n);
 }
-function cambiarAsesor(){localStorage.removeItem('jm_as');asesor=null;buildGrid();goTo('sa','l');}
-function irMenu(){cerrarModal();goTo('sm','l');}
-function irForm(){if(!asesor){cambiarAsesor();return;}goTo('sf','r');}
+
+function cambiarAsesor(){
+  // En el formulario, al tocar el chip vuelve al hub donde está el selector
+  irMenu();
+}
 function selCanal(v,el,cls){
   canal=v;document.getElementById('canal').value=v;
   document.getElementById('bTrad').classList.remove('st','sd');
@@ -848,10 +805,8 @@ function saveOff(body,nombre){
 }
 function rPend(){
   const p=JSON.parse(localStorage.getItem('jm_pend')||'[]');
-  const dot=document.getElementById('pdot');
-  ['spMenu','spForm'].forEach(id=>{const s=document.getElementById(id);if(s)s.style.display=p.length?'block':'none';});
-  ['pListMenu','pListForm'].forEach(id=>{const el=document.getElementById(id);if(el)el.innerHTML=p.map(x=>`• ${x.nombre} — ${x.asesor} — ${new Date(x.fecha).toLocaleString('es-CO')}`).join('<br>');});
-  if(dot){dot.style.display=p.length?'inline':'none';if(p.length)dot.textContent=p.length;}
+  ['spHub','spForm'].forEach(id=>{const s=document.getElementById(id);if(s)s.style.display=p.length?'block':'none';});
+  ['pListHub','pListForm'].forEach(id=>{const el=document.getElementById(id);if(el)el.innerHTML=p.map(x=>`• ${x.nombre} — ${x.asesor} — ${new Date(x.fecha).toLocaleString('es-CO')}`).join('<br>');});
 }
 async function sync(){
   const p=JSON.parse(localStorage.getItem('jm_pend')||'[]');
@@ -930,8 +885,8 @@ function initCanvas(){
   draw();
 }
 rPend();
+initAsesorSel();
 if(!navigator.onLine)document.getElementById('offB').classList.add('show');
-// Init canvas solo cuando la pantalla welcome es visible
 initCanvas();
 </script>
 </body>
