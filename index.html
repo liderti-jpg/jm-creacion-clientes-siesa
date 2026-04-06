@@ -1,0 +1,831 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<meta name="theme-color" content="#0B1F4A">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="JM Clientes">
+<meta name="description" content="Jota Mundial SAS — Registro de clientes">
+<link rel="manifest" href="manifest.json">
+<link rel="apple-touch-icon" href="https://i.ibb.co/BKyTpZ1g/logo-JOTA-MUNDIAL-SAS-original-mundoo.png">
+<title>Nuevo Cliente — Jota Mundial SAS</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root{
+  --navy:#0B1F4A;--navy2:#1A3A6E;--navy3:#2E5199;
+  --blue:#3B6FD4;--blue2:#5B8FE8;--blue3:#EAF0FD;
+  --gold:#B8860B;--gold2:#D4A017;
+  --bg:#F4F6FB;--bg2:#FFFFFF;--bg3:#EEF1F8;
+  --text:#0B1F4A;--text2:#3D5280;--text3:#7A90B8;
+  --border:#D8E2F5;--green:#0A7A5A;--green2:#E6F7F2;
+  --red:#C0392B;--red2:#FEF2F2;--orange:#D97706;
+  --shadow:0 2px 16px rgba(11,31,74,.08);
+  --r:14px;--rs:10px;
+}
+*{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
+html,body{height:100%;overflow-x:hidden}
+body{font-family:'Inter',sans-serif;background:var(--bg);color:var(--text);min-height:100vh;min-height:-webkit-fill-available}
+
+/* ── HEADER ── */
+.app-header{
+  background:var(--navy);
+  padding:env(safe-area-inset-top,0) 20px 0;
+  padding-top:calc(env(safe-area-inset-top,0px) + 12px);
+  padding-bottom:14px;
+  display:flex;align-items:center;justify-content:space-between;
+  position:sticky;top:0;z-index:50;
+  box-shadow:0 2px 20px rgba(11,31,74,.3);
+}
+.app-header-left{display:flex;align-items:center;gap:12px}
+.app-logo{height:38px;width:auto;mix-blend-mode:lighten}
+.app-title{color:#fff;font-size:15px;font-weight:700;line-height:1.2}
+.app-sub{color:rgba(255,255,255,.45);font-size:10px;letter-spacing:1.2px;text-transform:uppercase;display:block;margin-top:1px}
+.app-step-badge{background:rgba(255,255,255,.1);border:1px solid rgba(255,255,255,.2);border-radius:20px;padding:5px 12px;font-size:11px;font-weight:600;color:rgba(255,255,255,.7)}
+
+/* ── PROGRESS ── */
+.progress-wrap{background:rgba(255,255,255,.1);height:3px}
+.progress-fill{height:3px;background:linear-gradient(90deg,var(--gold),var(--gold2));transition:width .4s ease}
+
+/* ── SCROLL AREA ── */
+.scroll-area{
+  padding:20px 16px calc(env(safe-area-inset-bottom,0px) + 100px);
+  max-width:600px;margin:0 auto;
+}
+
+/* ── SECTION CARD ── */
+.section-card{
+  background:var(--bg2);border-radius:var(--r);
+  border:1.5px solid var(--border);
+  box-shadow:var(--shadow);
+  margin-bottom:16px;overflow:hidden;
+}
+.section-header{
+  padding:14px 18px;
+  border-bottom:1px solid var(--border);
+  display:flex;align-items:center;gap:10px;
+}
+.section-icon{
+  width:32px;height:32px;border-radius:9px;
+  background:var(--blue3);
+  display:flex;align-items:center;justify-content:center;font-size:15px;
+  flex-shrink:0;
+}
+.section-title{font-size:13px;font-weight:700;color:var(--navy)}
+.section-sub{font-size:10px;color:var(--text3);margin-top:1px}
+.section-body{padding:16px 18px;display:flex;flex-direction:column;gap:14px}
+
+/* ── CAMPO ── */
+.field{display:flex;flex-direction:column;gap:5px}
+.field-row{display:grid;gap:12px}
+.field-row-2{grid-template-columns:1fr 1fr}
+.field-row-3{grid-template-columns:1fr 1fr 1fr}
+@media(max-width:400px){.field-row-2,.field-row-3{grid-template-columns:1fr}}
+label{font-size:10px;font-weight:700;color:var(--text3);text-transform:uppercase;letter-spacing:.8px;display:flex;align-items:center;gap:4px}
+label .req{color:var(--red);font-size:12px;line-height:1}
+.field-input{
+  background:var(--bg3);border:1.5px solid var(--border);
+  border-radius:var(--rs);padding:11px 14px;
+  font-size:15px;color:var(--text);font-family:'Inter',sans-serif;
+  outline:none;transition:all .2s;width:100%;
+  -webkit-appearance:none;appearance:none;
+}
+.field-input:focus{border-color:var(--blue);background:#fff;box-shadow:0 0 0 3px rgba(59,111,212,.1)}
+.field-input.error{border-color:var(--red);background:var(--red2)}
+.field-input::placeholder{color:var(--text3)}
+select.field-input{background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath d='M1 1l5 5 5-5' stroke='%237A90B8' stroke-width='1.5' fill='none' stroke-linecap='round'/%3E%3C/svg%3E");background-repeat:no-repeat;background-position:right 12px center;padding-right:32px}
+.field-hint{font-size:10px;color:var(--text3);margin-top:2px}
+.field-error{font-size:10px;color:var(--red);font-weight:600;margin-top:2px;display:none}
+.field-input.error + .field-error{display:block}
+
+/* ── TOGGLE TIPO ── */
+.tipo-toggle{display:flex;gap:8px;flex-wrap:wrap}
+.tipo-btn{
+  flex:1;min-width:100px;
+  border:1.5px solid var(--border);border-radius:var(--rs);
+  padding:10px 8px;text-align:center;cursor:pointer;
+  transition:all .2s;background:var(--bg3);
+  font-size:12px;font-weight:600;color:var(--text2);
+  user-select:none;
+}
+.tipo-btn.active{background:var(--navy);color:#fff;border-color:var(--navy);box-shadow:0 3px 10px rgba(11,31,74,.2)}
+.tipo-btn .tipo-icon{font-size:18px;display:block;margin-bottom:3px}
+
+/* ── INDICADORES (cliente/proveedor/empleado) ── */
+.ind-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}
+.ind-item{
+  border:1.5px solid var(--border);border-radius:var(--rs);
+  padding:10px 8px;text-align:center;cursor:pointer;
+  transition:all .2s;background:var(--bg3);
+  user-select:none;
+}
+.ind-item.active{background:var(--blue3);border-color:var(--blue);color:var(--navy2)}
+.ind-icon{font-size:18px;display:block;margin-bottom:3px}
+.ind-label{font-size:10px;font-weight:700;color:inherit;text-transform:uppercase;letter-spacing:.5px}
+
+/* ── STICKY FOOTER ── */
+.sticky-footer{
+  position:fixed;bottom:0;left:0;right:0;
+  background:var(--bg2);
+  border-top:1.5px solid var(--border);
+  padding:12px 16px;
+  padding-bottom:calc(env(safe-area-inset-bottom,0px) + 12px);
+  box-shadow:0 -4px 20px rgba(11,31,74,.08);
+  z-index:50;
+}
+.btn-submit{
+  width:100%;background:linear-gradient(135deg,var(--navy),var(--navy2));
+  color:#fff;border:none;border-radius:var(--rs);
+  padding:15px;font-size:16px;font-weight:700;
+  font-family:'Inter',sans-serif;cursor:pointer;
+  transition:all .2s;letter-spacing:.3px;
+  display:flex;align-items:center;justify-content:center;gap:8px;
+}
+.btn-submit:active{transform:scale(.98)}
+.btn-submit:disabled{opacity:.6;cursor:not-allowed;transform:none}
+.btn-submit.loading{background:var(--navy3)}
+
+/* ── SPINNER ── */
+.spinner{
+  width:18px;height:18px;border:2px solid rgba(255,255,255,.3);
+  border-top-color:#fff;border-radius:50%;
+  animation:spin 1s linear infinite;display:none;
+}
+.btn-submit.loading .spinner{display:block}
+.btn-submit.loading .btn-text{display:none}
+@keyframes spin{to{transform:rotate(360deg)}}
+
+/* ── TOAST ── */
+.toast{
+  position:fixed;top:calc(env(safe-area-inset-top,0px) + 80px);
+  left:50%;transform:translateX(-50%) translateY(-20px);
+  background:var(--navy);color:#fff;
+  border-radius:99px;padding:12px 22px;
+  font-size:13px;font-weight:600;
+  box-shadow:0 8px 30px rgba(11,31,74,.3);
+  z-index:200;opacity:0;transition:all .3s;
+  white-space:nowrap;max-width:90vw;text-align:center;
+  display:flex;align-items:center;gap:8px;
+}
+.toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
+.toast.success{background:var(--green)}
+.toast.error{background:var(--red)}
+.toast.warn{background:var(--orange)}
+
+/* ── MODAL ÉXITO ── */
+.modal-overlay{
+  position:fixed;inset:0;background:rgba(11,31,74,.6);
+  backdrop-filter:blur(8px);z-index:100;
+  display:flex;align-items:flex-end;justify-content:center;
+  opacity:0;pointer-events:none;transition:opacity .3s;
+}
+.modal-overlay.open{opacity:1;pointer-events:all}
+.modal-sheet{
+  background:var(--bg2);border-radius:24px 24px 0 0;
+  padding:28px 24px calc(env(safe-area-inset-bottom,0px) + 28px);
+  width:100%;max-width:600px;
+  transform:translateY(100%);transition:transform .35s cubic-bezier(.32,.72,0,1);
+  text-align:center;
+}
+.modal-overlay.open .modal-sheet{transform:translateY(0)}
+.modal-check{
+  width:72px;height:72px;border-radius:50%;
+  background:var(--green2);border:3px solid var(--green);
+  display:flex;align-items:center;justify-content:center;
+  font-size:32px;margin:0 auto 16px;
+}
+.modal-title{font-size:20px;font-weight:700;color:var(--navy);margin-bottom:8px}
+.modal-sub{font-size:14px;color:var(--text2);margin-bottom:8px;line-height:1.5}
+.modal-nit{font-family:'JetBrains Mono',monospace;font-size:13px;color:var(--text3);margin-bottom:24px}
+.modal-actions{display:flex;flex-direction:column;gap:10px}
+.btn-nuevo{background:var(--navy);color:#fff;border:none;border-radius:var(--rs);padding:14px;font-size:15px;font-weight:700;font-family:'Inter',sans-serif;cursor:pointer;width:100%}
+.btn-ver{background:var(--bg3);color:var(--navy2);border:1.5px solid var(--border);border-radius:var(--rs);padding:13px;font-size:14px;font-weight:600;font-family:'Inter',sans-serif;cursor:pointer;width:100%}
+
+/* ── OFFLINE BANNER ── */
+.offline-banner{
+  background:var(--orange);color:#fff;
+  text-align:center;padding:8px 16px;
+  font-size:12px;font-weight:600;
+  display:none;
+}
+.offline-banner.show{display:block}
+
+/* ── PENDIENTES BADGE ── */
+.pending-badge{
+  background:var(--orange);color:#fff;
+  border-radius:99px;padding:2px 8px;font-size:10px;font-weight:700;
+  display:none;margin-left:6px;
+}
+</style>
+</head>
+<body>
+
+<div class="toast" id="toast"></div>
+
+<!-- Modal éxito -->
+<div class="modal-overlay" id="modalExito">
+  <div class="modal-sheet">
+    <div class="modal-check">✓</div>
+    <div class="modal-title" id="modalTitulo">¡Cliente creado!</div>
+    <div class="modal-sub" id="modalSub"></div>
+    <div class="modal-nit" id="modalNit"></div>
+    <div class="modal-actions">
+      <button class="btn-nuevo" onclick="nuevoRegistro()">➕ Registrar otro cliente</button>
+      <button class="btn-ver" onclick="cerrarModal()">Volver al formulario</button>
+    </div>
+  </div>
+</div>
+
+<!-- Offline banner -->
+<div class="offline-banner" id="offlineBanner">
+  📵 Sin conexión — el registro se guardará y enviará automáticamente cuando vuelva la señal
+</div>
+
+<!-- Header -->
+<header class="app-header">
+  <div class="app-header-left">
+    <img class="app-logo" src="https://i.ibb.co/gbVD1bq5/logo-JOTA-MUNDIAL-SAS-original.png" alt="JM">
+    <div>
+      <div class="app-title">Nuevo Cliente</div>
+      <span class="app-sub">SIESA SBS · Producción</span>
+    </div>
+  </div>
+  <div style="display:flex;align-items:center;gap:8px">
+    <span class="app-step-badge" id="stepBadge">Paso 1 de 3</span>
+    <span class="pending-badge" id="pendingBadge" onclick="verPendientes()">0 pendientes</span>
+  </div>
+</header>
+
+<!-- Barra de progreso -->
+<div class="progress-wrap">
+  <div class="progress-fill" id="progressFill" style="width:33%"></div>
+</div>
+
+<!-- Contenido -->
+<div class="scroll-area" id="scrollArea">
+
+  <!-- SECCIÓN 1 — Identificación -->
+  <div class="section-card" id="sec1">
+    <div class="section-header">
+      <div class="section-icon">🪪</div>
+      <div>
+        <div class="section-title">Identificación</div>
+        <div class="section-sub">Datos del documento del cliente</div>
+      </div>
+    </div>
+    <div class="section-body">
+
+      <div class="field">
+        <label>Tipo de identificación <span class="req">*</span></label>
+        <select class="field-input" id="tipoIdent" onchange="actualizarForm()">
+          <option value="">Selecciona...</option>
+          <option value="N">NIT</option>
+          <option value="C">Cédula de ciudadanía</option>
+          <option value="E">Cédula de extranjería</option>
+          <option value="P">Pasaporte</option>
+          <option value="T">Tarjeta de identidad</option>
+        </select>
+        <div class="field-error">Selecciona el tipo de identificación</div>
+      </div>
+
+      <div class="field-row field-row-2" id="rowNitDv" style="display:none">
+        <div class="field">
+          <label>NIT <span class="req">*</span></label>
+          <input class="field-input" id="nit" type="tel" placeholder="901234567" maxlength="15" oninput="soloNumeros(this);calcularDV()">
+          <div class="field-error">Ingresa el NIT sin dígito de verificación</div>
+        </div>
+        <div class="field">
+          <label>Dígito de verificación</label>
+          <input class="field-input" id="dv" type="tel" placeholder="Auto" maxlength="1" readonly style="background:var(--bg3);color:var(--text3)">
+          <div class="field-hint">Se calcula automáticamente</div>
+        </div>
+      </div>
+
+      <div class="field" id="rowCedula" style="display:none">
+        <label>Número de documento <span class="req">*</span></label>
+        <input class="field-input" id="cedula" type="tel" placeholder="1234567890" maxlength="15" oninput="soloNumeros(this)">
+        <div class="field-error">Ingresa el número de documento</div>
+      </div>
+
+      <div class="field" id="rowTipoTercero">
+        <label>Tipo de tercero <span class="req">*</span></label>
+        <div class="tipo-toggle">
+          <div class="tipo-btn active" onclick="selTipo('1',this)" id="tipoBtn1">
+            <span class="tipo-icon">🏢</span>Jurídica
+          </div>
+          <div class="tipo-btn" onclick="selTipo('2',this)" id="tipoBtn2">
+            <span class="tipo-icon">👤</span>Natural
+          </div>
+        </div>
+        <input type="hidden" id="tipoTercero" value="1">
+      </div>
+
+    </div>
+  </div>
+
+  <!-- SECCIÓN 2 — Nombre / Razón social -->
+  <div class="section-card" id="sec2">
+    <div class="section-header">
+      <div class="section-icon">🏷️</div>
+      <div>
+        <div class="section-title">Nombre / Razón social</div>
+        <div class="section-sub">Como aparecerá en SIESA</div>
+      </div>
+    </div>
+    <div class="section-body">
+
+      <div class="field" id="rowRazon">
+        <label>Razón social <span class="req">*</span></label>
+        <input class="field-input" id="razonSocial" type="text" placeholder="EMPRESA EJEMPLO SAS" oninput="this.value=this.value.toUpperCase();sincronizarNombreEst()">
+        <div class="field-error">Ingresa la razón social</div>
+      </div>
+
+      <div id="rowNombres" style="display:none">
+        <div class="field-row field-row-2" style="margin-bottom:12px">
+          <div class="field">
+            <label>Primer apellido <span class="req">*</span></label>
+            <input class="field-input" id="apellido1" type="text" placeholder="GARCÍA" oninput="this.value=this.value.toUpperCase();sincronizarNombreEst()">
+            <div class="field-error">Ingresa el primer apellido</div>
+          </div>
+          <div class="field">
+            <label>Segundo apellido</label>
+            <input class="field-input" id="apellido2" type="text" placeholder="LÓPEZ" oninput="this.value=this.value.toUpperCase();sincronizarNombreEst()">
+          </div>
+        </div>
+        <div class="field">
+          <label>Nombres <span class="req">*</span></label>
+          <input class="field-input" id="nombres" type="text" placeholder="CARLOS ANDRÉS" oninput="this.value=this.value.toUpperCase();sincronizarNombreEst()">
+          <div class="field-error">Ingresa los nombres</div>
+        </div>
+      </div>
+
+      <div class="field">
+        <label>Nombre de establecimiento</label>
+        <input class="field-input" id="nombreEst" type="text" placeholder="Se completa automáticamente" oninput="this.value=this.value.toUpperCase()">
+        <div class="field-hint">Nombre comercial o como aparece en documentos</div>
+      </div>
+
+      <div class="field">
+        <label>Indicadores <span class="req">*</span></label>
+        <div class="ind-grid">
+          <div class="ind-item active" onclick="toggleInd('cliente',this)" id="indCliente">
+            <span class="ind-icon">🛒</span>
+            <span class="ind-label">Cliente</span>
+          </div>
+          <div class="ind-item" onclick="toggleInd('proveedor',this)" id="indProveedor">
+            <span class="ind-icon">🚚</span>
+            <span class="ind-label">Proveedor</span>
+          </div>
+          <div class="ind-item" onclick="toggleInd('empleado',this)" id="indEmpleado">
+            <span class="ind-icon">👔</span>
+            <span class="ind-label">Empleado</span>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- SECCIÓN 3 — Contacto y ubicación -->
+  <div class="section-card" id="sec3">
+    <div class="section-header">
+      <div class="section-icon">📍</div>
+      <div>
+        <div class="section-title">Contacto y ubicación</div>
+        <div class="section-sub">Datos de contacto en Colombia</div>
+      </div>
+    </div>
+    <div class="section-body">
+
+      <div class="field">
+        <label>Dirección</label>
+        <input class="field-input" id="direccion" type="text" placeholder="CL 45 # 23-10" oninput="this.value=this.value.toUpperCase()">
+      </div>
+
+      <div class="field-row field-row-2">
+        <div class="field">
+          <label>Departamento</label>
+          <select class="field-input" id="depto" onchange="cargarMunicipios()">
+            <option value="">Selecciona...</option>
+            <option value="05">Antioquia</option>
+            <option value="08">Atlántico</option>
+            <option value="11">Bogotá D.C.</option>
+            <option value="13">Bolívar</option>
+            <option value="15">Boyacá</option>
+            <option value="17">Caldas</option>
+            <option value="18">Caquetá</option>
+            <option value="19">Cauca</option>
+            <option value="20">Cesar</option>
+            <option value="23">Córdoba</option>
+            <option value="25">Cundinamarca</option>
+            <option value="27">Chocó</option>
+            <option value="41">Huila</option>
+            <option value="44">La Guajira</option>
+            <option value="47">Magdalena</option>
+            <option value="50">Meta</option>
+            <option value="52">Nariño</option>
+            <option value="54">Norte de Santander</option>
+            <option value="63">Quindío</option>
+            <option value="66">Risaralda</option>
+            <option value="68">Santander</option>
+            <option value="70">Sucre</option>
+            <option value="73">Tolima</option>
+            <option value="76">Valle del Cauca</option>
+          </select>
+        </div>
+        <div class="field">
+          <label>Ciudad / Municipio</label>
+          <select class="field-input" id="ciudad">
+            <option value="">Primero selecciona depto.</option>
+          </select>
+        </div>
+      </div>
+
+      <div class="field-row field-row-2">
+        <div class="field">
+          <label>Teléfono</label>
+          <input class="field-input" id="telefono" type="tel" placeholder="6046001234" maxlength="12" oninput="soloNumeros(this)">
+        </div>
+        <div class="field">
+          <label>Celular</label>
+          <input class="field-input" id="celular" type="tel" placeholder="3001234567" maxlength="12" oninput="soloNumeros(this)">
+        </div>
+      </div>
+
+      <div class="field">
+        <label>Correo electrónico</label>
+        <input class="field-input" id="email" type="email" placeholder="contacto@empresa.com">
+      </div>
+
+      <div class="field">
+        <label>Persona de contacto</label>
+        <input class="field-input" id="contacto" type="text" placeholder="Juan Pérez" oninput="this.value=this.value.toUpperCase()">
+      </div>
+
+    </div>
+  </div>
+
+  <!-- Info guardado offline -->
+  <div id="pendientesSection" style="display:none;margin-bottom:16px">
+    <div style="background:var(--orange);border-radius:var(--r);padding:14px 16px;color:#fff">
+      <div style="font-weight:700;font-size:13px;margin-bottom:4px">📋 Registros pendientes de enviar</div>
+      <div style="font-size:12px;opacity:.9" id="pendientesInfo"></div>
+      <button onclick="sincronizarPendientes()" style="margin-top:10px;background:rgba(255,255,255,.2);border:1px solid rgba(255,255,255,.4);border-radius:8px;padding:7px 14px;color:#fff;font-size:12px;font-weight:600;cursor:pointer;font-family:'Inter',sans-serif">↑ Sincronizar ahora</button>
+    </div>
+  </div>
+
+</div>
+
+<!-- Footer fijo con botón -->
+<div class="sticky-footer">
+  <button class="btn-submit" id="btnSubmit" onclick="enviarFormulario()">
+    <span class="btn-text">💾 Guardar cliente en SIESA</span>
+    <div class="spinner"></div>
+  </button>
+</div>
+
+<script>
+const WEBHOOK='https://jotamundial2.app.n8n.cloud/webhook/crear-cliente';
+const PAIS_CO='169'; // código Colombia en SIESA
+const CIA='8628';
+
+// ── MUNICIPIOS POR DEPARTAMENTO (principales) ──────────────────
+const MUNICIPIOS={
+  '05':[['05001','Medellín'],['05045','Apartadó'],['05088','Bello'],['05380','Itagüí'],['05266','Envigado'],['05615','Rionegro'],['05360','Itagüí']],
+  '08':[['08001','Barranquilla'],['08433','Malambo'],['08758','Soledad']],
+  '11':[['11001','Bogotá D.C.']],
+  '13':[['13001','Cartagena'],['13430','Magangué'],['13836','Turbaco']],
+  '15':[['15001','Tunja'],['15238','Duitama'],['15693','Sogamoso']],
+  '17':[['17001','Manizales'],['17174','Chinchiná'],['17380','La Dorada']],
+  '18':[['18001','Florencia']],
+  '19':[['19001','Popayán'],['19698','Santander de Quilichao']],
+  '20':[['20001','Valledupar'],['20400','Manaure'],['20770','San Diego']],
+  '23':[['23001','Montería'],['23417','Lorica'],['23660','Sahagún']],
+  '25':[['25175','Chía'],['25307','Funza'],['25473','Mosquera'],['25754','Soacha'],['25769','Sopó'],['25899','Zipaquirá']],
+  '27':[['27001','Quibdó']],
+  '41':[['41001','Neiva'],['41298','Garzón'],['41396','La Plata']],
+  '44':[['44001','Riohacha'],['44430','Maicao'],['44847','Villanueva']],
+  '47':[['47001','Santa Marta'],['47189','Ciénaga'],['47460','Montería']],
+  '50':[['50001','Villavicencio'],['50226','El Dorado'],['50573','Puerto López']],
+  '52':[['52001','Pasto'],['52356','Ipiales'],['52520','Puerres']],
+  '54':[['54001','Cúcuta'],['54174','Chinácota'],['54261','El Zulia'],['54518','Pamplona']],
+  '63':[['63001','Armenia'],['63130','Calarcá'],['63401','La Tebaida']],
+  '66':[['66001','Pereira'],['66045','Apía'],['66170','Dosquebradas'],['66594','Santa Rosa de Cabal']],
+  '68':[['68001','Bucaramanga'],['68081','Barrancabermeja'],['68307','Girón'],['68547','Piedecuesta'],['68679','Sabana de Torres'],['68776','Socorro']],
+  '70':[['70001','Sincelejo'],['70215','Corozal'],['70702','San Marcos']],
+  '73':[['73001','Ibagué'],['73268','Espinal'],['73449','Melgar']],
+  '76':[['76001','Cali'],['76109','Buenaventura'],['76111','Guadalajara de Buga'],['76520','Palmira'],['76001','Santiago de Cali'],['76834','Tulúa']],
+};
+
+function cargarMunicipios(){
+  const dep=document.getElementById('depto').value;
+  const sel=document.getElementById('ciudad');
+  sel.innerHTML='<option value="">Selecciona ciudad...</option>';
+  if(!dep||!MUNICIPIOS[dep])return;
+  MUNICIPIOS[dep].forEach(([cod,nom])=>{
+    const o=document.createElement('option');
+    o.value=cod; o.textContent=nom; sel.appendChild(o);
+  });
+}
+
+// ── TIPO IDENTIFICACIÓN ─────────────────────────────────────
+function actualizarForm(){
+  const tipo=document.getElementById('tipoIdent').value;
+  document.getElementById('rowNitDv').style.display=tipo==='N'?'grid':'none';
+  document.getElementById('rowCedula').style.display=tipo&&tipo!=='N'?'block':'none';
+  actualizarProgress();
+}
+
+// ── TIPO TERCERO (jurídica / natural) ──────────────────────
+function selTipo(val,el){
+  document.getElementById('tipoTercero').value=val;
+  document.querySelectorAll('.tipo-btn').forEach(b=>b.classList.remove('active'));
+  el.classList.add('active');
+  const esNatural=val==='2';
+  document.getElementById('rowRazon').style.display=esNatural?'none':'block';
+  document.getElementById('rowNombres').style.display=esNatural?'block':'none';
+  sincronizarNombreEst();
+}
+
+// ── SINCRONIZAR NOMBRE EST ──────────────────────────────────
+function sincronizarNombreEst(){
+  const tipo=document.getElementById('tipoTercero').value;
+  let nombre='';
+  if(tipo==='2'){
+    const a1=document.getElementById('apellido1').value;
+    const a2=document.getElementById('apellido2').value;
+    const n=document.getElementById('nombres').value;
+    nombre=[a1,a2,n].filter(Boolean).join(' ');
+  } else {
+    nombre=document.getElementById('razonSocial').value;
+  }
+  const ne=document.getElementById('nombreEst');
+  if(!ne._editado) ne.value=nombre;
+}
+document.getElementById('nombreEst').addEventListener('input',function(){this._editado=!!this.value});
+
+// ── INDICADORES ─────────────────────────────────────────────
+const inds={cliente:false,proveedor:false,empleado:false};
+// Cliente activo por defecto
+inds.cliente=true;
+function toggleInd(key,el){
+  inds[key]=!inds[key];
+  el.classList.toggle('active',inds[key]);
+}
+
+// ── DÍGITO DE VERIFICACIÓN NIT ──────────────────────────────
+function calcularDV(){
+  const nit=document.getElementById('nit').value.replace(/\D/g,'');
+  if(!nit){document.getElementById('dv').value='';return}
+  const p=[3,7,13,17,19,23,29,37,41,43,47,53,59,67,71];
+  let s=0;
+  const n=nit.split('').reverse();
+  n.forEach((d,i)=>s+=parseInt(d)*(p[i%15]||p[i%15-15]));
+  const r=s%11;
+  document.getElementById('dv').value=r>1?11-r:r;
+}
+
+// ── SOLO NÚMEROS ─────────────────────────────────────────────
+function soloNumeros(el){el.value=el.value.replace(/\D/g,'')}
+
+// ── PROGRESO ─────────────────────────────────────────────────
+function actualizarProgress(){
+  const campos=[
+    document.getElementById('tipoIdent').value,
+    (document.getElementById('tipoIdent').value==='N'?document.getElementById('nit').value:document.getElementById('cedula').value),
+    (document.getElementById('tipoTercero').value==='2'?document.getElementById('apellido1').value:document.getElementById('razonSocial').value),
+  ];
+  const llenos=campos.filter(Boolean).length;
+  const pct=33+Math.round((llenos/campos.length)*67);
+  document.getElementById('progressFill').style.width=Math.min(pct,100)+'%';
+  const paso=llenos<1?1:llenos<2?2:3;
+  document.getElementById('stepBadge').textContent=`Paso ${paso} de 3`;
+}
+document.querySelectorAll('.field-input').forEach(el=>el.addEventListener('input',actualizarProgress));
+
+// ── VALIDACIÓN ───────────────────────────────────────────────
+function validar(){
+  let ok=true;
+  const req=(id)=>{
+    const el=document.getElementById(id);
+    if(!el||el.offsetParent===null)return true; // oculto → no validar
+    if(!el.value.trim()){el.classList.add('error');ok=false;return false}
+    el.classList.remove('error');return true;
+  };
+  req('tipoIdent');
+  if(document.getElementById('tipoIdent').value==='N') req('nit');
+  else req('cedula');
+  if(document.getElementById('tipoTercero').value==='2'){req('apellido1');req('nombres')}
+  else req('razonSocial');
+  if(!ok) mostrarToast('Completa los campos obligatorios','warn');
+  return ok;
+}
+
+// ── ARMAR BODY SIESA ─────────────────────────────────────────
+function armarBody(){
+  const tipo=document.getElementById('tipoIdent').value;
+  const esNIT=tipo==='N';
+  const nit=esNIT?document.getElementById('nit').value:document.getElementById('cedula').value;
+  const dv=esNIT?document.getElementById('dv').value:'';
+  const tipoT=document.getElementById('tipoTercero').value;
+  const esNatural=tipoT==='2';
+  const razon=esNatural?'':document.getElementById('razonSocial').value;
+  const ap1=esNatural?document.getElementById('apellido1').value:'';
+  const ap2=esNatural?document.getElementById('apellido2').value:'';
+  const noms=esNatural?document.getElementById('nombres').value:'';
+  const nombreEst=document.getElementById('nombreEst').value||razon||[ap1,ap2,noms].filter(Boolean).join(' ');
+  return{
+    "Inicial":[{"F_CIA":CIA}],
+    "Terceros":[{
+      "F_CIA":CIA,
+      "F_ACTUALIZA_REG":"1",
+      "F200_ID":nit,
+      "F200_NIT":nit,
+      "F200_DV_NIT":dv,
+      "F200_ID_TIPO_IDENT":tipo,
+      "F200_IND_TIPO_TERCERO":tipoT,
+      "F200_RAZON_SOCIAL":razon,
+      "F200_APELLIDO1":ap1,
+      "F200_APELLIDO2":ap2,
+      "F200_NOMBRES":noms,
+      "F200_NOMBRE_EST":nombreEst,
+      "F200_IND_CLIENTE":inds.cliente?"1":"0",
+      "F200_IND_PROVEEDOR":inds.proveedor?"1":"0",
+      "F200_IND_EMPLEADO":inds.empleado?"1":"0",
+      "F200_IND_ACCIONISTA":"0",
+      "F200_IND_OTROS":"0",
+      "F200_IND_INTERNO":"0",
+      "F015_CONTACTO":document.getElementById('contacto').value,
+      "F015_DIRECCION1":document.getElementById('direccion').value,
+      "F015_DIRECCION2":"",
+      "F015_DIRECCION3":"",
+      "F015_ID_PAIS":PAIS_CO,
+      "F015_ID_DEPTO":document.getElementById('depto').value,
+      "F015_ID_CIUDAD":document.getElementById('ciudad').value,
+      "F015_ID_BARRIO":"",
+      "F015_TELEFONO":document.getElementById('telefono').value,
+      "F015_FAX":"",
+      "F015_COD_POSTAL":"",
+      "F015_EMAIL":document.getElementById('email').value,
+      "F200_FECHA_NACIMIENTO":"",
+      "F200_ID_CIIU":"",
+      "F200_IND_NO_DOMICILIADO":"0",
+      "F200_IND_ESTADO":"1",
+      "F015_CELULAR":document.getElementById('celular').value
+    }],
+    "Final":[{"F_CIA":CIA}]
+  };
+}
+
+// ── ENVIAR ────────────────────────────────────────────────────
+async function enviarFormulario(){
+  if(!validar())return;
+  const btn=document.getElementById('btnSubmit');
+  btn.classList.add('loading');btn.disabled=true;
+
+  const body=armarBody();
+  const nombreMostrar=body.Terceros[0].F200_NOMBRE_EST||body.Terceros[0].F200_RAZON_SOCIAL;
+  const nitMostrar=body.Terceros[0].F200_NIT;
+
+  if(!navigator.onLine){
+    guardarPendiente(body,nombreMostrar);
+    btn.classList.remove('loading');btn.disabled=false;
+    mostrarToast('Sin conexión — guardado para sincronizar después','warn');
+    return;
+  }
+
+  try{
+    const res=await fetch(WEBHOOK,{
+      method:'POST',
+      headers:{'Content-Type':'application/json'},
+      body:JSON.stringify({body})
+    });
+    const data=await res.json();
+    // Connekta retorna codigo:0 cuando es exitoso
+    const exito=data.codigo===0||(data.body&&data.body.codigo===0)||(typeof data==='object'&&JSON.stringify(data).includes('"codigo":0'));
+    if(exito){
+      mostrarModalExito(nombreMostrar,nitMostrar);
+    } else {
+      const msg=data.mensaje||data.body?.mensaje||'Verifica los datos e intenta de nuevo';
+      mostrarToast('Error SIESA: '+msg,'error');
+    }
+  }catch(e){
+    // Si falla la conexión, guardar offline
+    guardarPendiente(body,nombreMostrar);
+    mostrarToast('Error de red — guardado para sincronizar','warn');
+  }finally{
+    btn.classList.remove('loading');btn.disabled=false;
+  }
+}
+
+// ── MODAL ÉXITO ──────────────────────────────────────────────
+function mostrarModalExito(nombre,nit){
+  document.getElementById('modalTitulo').textContent='✅ ¡Cliente creado en SIESA!';
+  document.getElementById('modalSub').textContent=`${nombre} fue registrado exitosamente en el sistema.`;
+  document.getElementById('modalNit').textContent=`NIT / Documento: ${nit}`;
+  document.getElementById('modalExito').classList.add('open');
+  document.getElementById('progressFill').style.width='100%';
+}
+
+function cerrarModal(){document.getElementById('modalExito').classList.remove('open')}
+
+function nuevoRegistro(){
+  cerrarModal();
+  document.querySelectorAll('.field-input').forEach(el=>{
+    if(el.tagName==='SELECT') el.selectedIndex=0;
+    else el.value='';
+    el.classList.remove('error');
+  });
+  inds.cliente=true;inds.proveedor=false;inds.empleado=false;
+  document.getElementById('indCliente').classList.add('active');
+  document.getElementById('indProveedor').classList.remove('active');
+  document.getElementById('indEmpleado').classList.remove('active');
+  document.getElementById('tipoBtn1').classList.add('active');
+  document.getElementById('tipoBtn2').classList.remove('active');
+  document.getElementById('tipoTercero').value='1';
+  document.getElementById('rowNitDv').style.display='none';
+  document.getElementById('rowCedula').style.display='none';
+  document.getElementById('rowNombres').style.display='none';
+  document.getElementById('rowRazon').style.display='block';
+  document.getElementById('progressFill').style.width='33%';
+  document.getElementById('stepBadge').textContent='Paso 1 de 3';
+  document.getElementById('scrollArea').scrollTop=0;
+  window.scrollTo(0,0);
+}
+
+// ── TOAST ────────────────────────────────────────────────────
+function mostrarToast(msg,tipo='success'){
+  const t=document.getElementById('toast');
+  t.textContent=tipo==='success'?'✅ '+msg:tipo==='error'?'❌ '+msg:'⚠️ '+msg;
+  t.className='toast '+tipo+' show';
+  setTimeout(()=>t.classList.remove('show'),3500);
+}
+
+// ── OFFLINE / PENDIENTES ─────────────────────────────────────
+function guardarPendiente(body,nombre){
+  const pendientes=JSON.parse(localStorage.getItem('jm_pendientes_clientes')||'[]');
+  pendientes.push({body,nombre,fecha:new Date().toISOString()});
+  localStorage.setItem('jm_pendientes_clientes',JSON.stringify(pendientes));
+  actualizarBadgePendientes();
+}
+
+function actualizarBadgePendientes(){
+  const pendientes=JSON.parse(localStorage.getItem('jm_pendientes_clientes')||'[]');
+  const badge=document.getElementById('pendingBadge');
+  const sec=document.getElementById('pendientesSection');
+  if(pendientes.length>0){
+    badge.style.display='inline';
+    badge.textContent=pendientes.length+' pendiente'+(pendientes.length>1?'s':'');
+    sec.style.display='block';
+    document.getElementById('pendientesInfo').textContent=
+      pendientes.map(p=>`• ${p.nombre} (${new Date(p.fecha).toLocaleDateString('es-CO')})`).join('\n');
+  } else {
+    badge.style.display='none';
+    sec.style.display='none';
+  }
+}
+
+async function sincronizarPendientes(){
+  const pendientes=JSON.parse(localStorage.getItem('jm_pendientes_clientes')||'[]');
+  if(!pendientes.length){mostrarToast('No hay pendientes','success');return}
+  if(!navigator.onLine){mostrarToast('Sin conexión — intenta más tarde','warn');return}
+  let ok=0,fail=0;
+  for(const p of pendientes){
+    try{
+      const res=await fetch(WEBHOOK,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({body:p.body})});
+      const data=await res.json();
+      const exito=data.codigo===0||(data.body&&data.body.codigo===0);
+      if(exito) ok++; else fail++;
+    }catch{fail++}
+  }
+  // Limpiar los exitosos (simplificado: limpiar todos si ok > 0)
+  if(ok>0) localStorage.removeItem('jm_pendientes_clientes');
+  actualizarBadgePendientes();
+  mostrarToast(`Sincronizados: ${ok} ok, ${fail} con error`,fail>0?'warn':'success');
+}
+
+function verPendientes(){
+  document.getElementById('pendientesSection').scrollIntoView({behavior:'smooth'});
+}
+
+// ── ONLINE / OFFLINE ─────────────────────────────────────────
+window.addEventListener('offline',()=>{
+  document.getElementById('offlineBanner').classList.add('show');
+});
+window.addEventListener('online',()=>{
+  document.getElementById('offlineBanner').classList.remove('show');
+  sincronizarPendientes();
+});
+
+// ── INIT ─────────────────────────────────────────────────────
+actualizarBadgePendientes();
+if(!navigator.onLine) document.getElementById('offlineBanner').classList.add('show');
+
+// Cerrar modal al tocar overlay
+document.getElementById('modalExito').addEventListener('click',function(e){
+  if(e.target===this) cerrarModal();
+});
+</script>
+</body>
+</html>

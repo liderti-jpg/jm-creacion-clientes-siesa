@@ -1,0 +1,26 @@
+{
+  "name": "JM Clientes — Jota Mundial SAS",
+  "short_name": "JM Clientes",
+  "description": "Registro de clientes en SIESA SBS desde el celular",
+  "start_url": "/jm-clientes/",
+  "display": "standalone",
+  "background_color": "#0B1F4A",
+  "theme_color": "#0B1F4A",
+  "orientation": "portrait",
+  "icons": [
+    {
+      "src": "https://i.ibb.co/BKyTpZ1g/logo-JOTA-MUNDIAL-SAS-original-mundoo.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "https://i.ibb.co/BKyTpZ1g/logo-JOTA-MUNDIAL-SAS-original-mundoo.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any maskable"
+    }
+  ],
+  "categories": ["business", "productivity"],
+  "lang": "es"
+}
