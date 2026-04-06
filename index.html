@@ -575,7 +575,7 @@ select.fi{background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.o
 </div>
 
 <script>
-const WH='https://jotamundial2.app.n8n.cloud/webhook/crear-cliente';
+const WH='https://jm-connekta-proxy.liderti-62c.workers.dev/';
 const CIA='1',PAIS='169';
 const AS=[
   {c:'000',n:'JOTA MUNDIAL SAS'},
@@ -783,10 +783,9 @@ async function enviar(){
   const nombre=body.Terceros[0].F200_NOMBRE_EST,nit=body.Terceros[0].F200_NIT;
   if(!navigator.onLine){saveOff(body,nombre);btn.classList.remove('loading');btn.disabled=false;showToast('Sin conexión — guardado para enviar después','warn');return;}
   try{
-    const res=await fetch(WH,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({body,meta:{asesor_codigo:asesor.c,asesor_nombre:asesor.n,canal,timestamp:new Date().toISOString(),modo:mUpd?'ACTUALIZAR':'CREAR'}})});
+    const res=await fetch(WH,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(body)});
     let data={};try{data=await res.json();}catch(e){}
-    const raw=JSON.stringify(data);
-    const ok=data.codigo===0||(data.body&&data.body.codigo===0)||raw.includes('"codigo":0')||res.ok;
+    const ok=data.codigo===0;
     if(ok){
       document.getElementById('mTitle').textContent=mUpd?'✅ Cliente actualizado':'✅ ¡Cliente creado en SIESA!';
       document.getElementById('mInfo').textContent=`${nombre} fue registrado exitosamente en SIESA SBS.`;
@@ -845,9 +844,9 @@ async function sync(){
   let ok=0,fail=0;
   for(const item of p){
     try{
-      const r=await fetch(WH,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({body:item.body,meta:{asesor_nombre:item.asesor,canal:item.canal,timestamp:item.fecha,modo:'CREAR'}})});
+      const r=await fetch(WH,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(item.body)});
       const d=await r.json().catch(()=>({}));
-      (d.codigo===0||(d.body&&d.body.codigo===0)||JSON.stringify(d).includes('"codigo":0'))?ok++:fail++;
+      d.codigo===0?ok++:fail++;
     }catch{fail++;}
   }
   if(ok>0)localStorage.removeItem('jm_pend');
