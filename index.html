@@ -728,60 +728,70 @@ function onNInput(el){
 async function onNB(){
   const n=gv('nit').replace(/\D/g,'');
   document.getElementById('dv').value=cdv(n);
-  if(!n||n.length<6)return;
-  if(_nitBusy)return;
+  if(!n||n.length<6){console.log('[NIT] muy corto:',n);return;}
+  if(_nitBusy){console.log('[NIT] busy, skip');return;}
   _nitBusy=true;
   clearTimeout(_nitTimer);
   document.getElementById('nSpin').style.display='block';
   document.getElementById('nIco').style.display='none';
   document.getElementById('razon').classList.remove('ok');
   document.getElementById('nit').classList.remove('ok');
+  console.log('[NIT] buscando:',n);
 
   let nombre=null;
 
   // Fuente 1 — datos.gov.co
   try{
+    console.log('[NIT F1] probando datos.gov.co...');
     const r=await Promise.race([
       fetch(`https://www.datos.gov.co/resource/x8dy-gf8y.json?nit=${n}`),
-      new Promise((_,j)=>setTimeout(()=>j('t'),4000))
+      new Promise((_,j)=>setTimeout(()=>j('timeout'),4000))
     ]);
     if(r&&r.ok){
       const arr=await r.json();
+      console.log('[NIT F1] respuesta:',arr);
       if(arr&&arr.length>0)
         nombre=arr[0].razon_social||arr[0].nombre_contribuyente||arr[0].nombre||null;
-    }
-  }catch(e){}
+    }else{console.log('[NIT F1] r.ok=false status:',r?.status);}
+  }catch(e){console.log('[NIT F1] error:',e?.message||e);}
 
   // Fuente 2 — felixmotta proxy
   if(!nombre){
     try{
+      console.log('[NIT F2] probando felixmotta...');
       const r=await Promise.race([
         fetch(`https://api.felixmotta.co/rues/nit/${n}`),
-        new Promise((_,j)=>setTimeout(()=>j('t'),4000))
+        new Promise((_,j)=>setTimeout(()=>j('timeout'),4000))
       ]);
-      if(r&&r.ok){const d=await r.json();nombre=d.razonSocial||d.razon_social||d.nombre||null;}
-    }catch(e){}
+      if(r&&r.ok){const d=await r.json();console.log('[NIT F2] respuesta:',d);nombre=d.razonSocial||d.razon_social||d.nombre||null;}
+      else{console.log('[NIT F2] r.ok=false status:',r?.status);}
+    }catch(e){console.log('[NIT F2] error:',e?.message||e);}
   }
 
   // Fuente 3 — webhook n8n relay
   if(!nombre){
     try{
+      console.log('[NIT F3] probando n8n relay...');
       const r=await Promise.race([
         fetch(`https://jotamundial2.app.n8n.cloud/webhook/consulta-nit?nit=${n}`),
-        new Promise((_,j)=>setTimeout(()=>j('t'),8000))
+        new Promise((_,j)=>setTimeout(()=>j('timeout'),8000))
       ]);
       if(r&&r.ok){
+        const raw=await r.text();
+        console.log('[NIT F3] raw:',raw);
         let d={};
-        try{d=JSON.parse(await r.text());}catch(e){}
+        try{d=JSON.parse(raw);}catch(e){console.log('[NIT F3] parse error');}
         nombre=d.razonSocial||d.razon_social||d.nombre||d.nombre_contribuyente||
                (Array.isArray(d)&&d[0]&&(d[0].razonSocial||d[0].razon_social||d[0].nombre))||null;
-      }
-    }catch(e){}
+        console.log('[NIT F3] nombre extraído:',nombre);
+      }else{console.log('[NIT F3] r.ok=false status:',r?.status);}
+    }catch(e){console.log('[NIT F3] error:',e?.message||e);}
   }
 
   _nitBusy=false;
   document.getElementById('nSpin').style.display='none';
   const ico=document.getElementById('nIco');
+  console.log('[NIT] resultado final nombre:',nombre);
   if(nombre){
     nombre=nombre.toUpperCase().trim();
     if(gv('tipoT')==='1'||!gv('tipoT')){
