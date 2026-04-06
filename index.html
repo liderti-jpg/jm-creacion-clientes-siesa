@@ -575,7 +575,13 @@ select.fi{background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.o
 </div>
 
 <script>
-const WH='https://jotamundial2.app.n8n.cloud/webhook/crear-cliente';
+const WH='https://api.siesacloud.com/connekta/siesa/estandar/conector/v3?idCompania=8628&idDocumento=150484&nombreDocumento=API_v1_Terceros';
+const CONNI_HEADERS={
+  'client_id':'9ieH3M0zP0CYHypXGlu0HFbA7X8QNmTr0Z1oGwjz4zK0AgNc',
+  'conniKey':'2a0af4a56786149abef3dc0423cac623',
+  'conniToken':'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJodHRwOi8vc2NoZW1hcy54bWxzb2FwLm9yZy93cy8yMDA1LzA1L2lkZW50aXR5L2NsYWltcy9uYW1laWRlbnRpZmllciI6IjI5ZTg5MGYzLTQ1OTgtNDk2MC05NjkxLTg1ZTEwNWVlYjQ2ZCIsImh0dHA6Ly9zY2hlbWFzLm1pY3Jvc29mdC5jb20vd3MvMjAwOC8wNi9pZGVudGl0eS9jbGFpbXMvcHJpbWFyeXNpZCI6IjAyMDYwYzZjLTdlMjctNDEwNy04ZmQ1LTA4YzI0NGE5MzZmMCJ9.7f1hv9aPs5DU0nCBVhxUzrvg2Z_KEu9q6BxJxGuShHE',
+  'Content-Type':'application/json'
+};
 const CIA='1',PAIS='169';
 const AS=[
   {c:'000',n:'JOTA MUNDIAL SAS'},
@@ -783,10 +789,9 @@ async function enviar(){
   const nombre=body.Terceros[0].F200_NOMBRE_EST,nit=body.Terceros[0].F200_NIT;
   if(!navigator.onLine){saveOff(body,nombre);btn.classList.remove('loading');btn.disabled=false;showToast('Sin conexión — guardado para enviar después','warn');return;}
   try{
-    const res=await fetch(WH,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({body,meta:{asesor_codigo:asesor.c,asesor_nombre:asesor.n,canal,timestamp:new Date().toISOString(),modo:mUpd?'ACTUALIZAR':'CREAR'}})});
+    const res=await fetch(WH,{method:'POST',headers:CONNI_HEADERS,body:JSON.stringify(body)});
     let data={};try{data=await res.json();}catch(e){}
-    const raw=JSON.stringify(data);
-    const ok=data.codigo===0||(data.body&&data.body.codigo===0)||raw.includes('"codigo":0')||res.ok;
+    const ok=data.codigo===0;
     if(ok){
       document.getElementById('mTitle').textContent=mUpd?'✅ Cliente actualizado':'✅ ¡Cliente creado en SIESA!';
       document.getElementById('mInfo').textContent=`${nombre} fue registrado exitosamente en SIESA SBS.`;
@@ -794,7 +799,7 @@ async function enviar(){
       document.getElementById('modal').classList.add('open');
       document.getElementById('pFill').style.width='100%';
     }else{
-      const msg=data.mensaje||data.body?.mensaje||'Verifica los datos';
+      const msg=data.mensaje||data.detalle||'Verifica los datos';
       showToast('Error SIESA: '+msg,'err');
     }
   }catch(e){saveOff(body,nombre);showToast('Error de red — guardado para sincronizar','warn');}
@@ -845,9 +850,9 @@ async function sync(){
   let ok=0,fail=0;
   for(const item of p){
     try{
-      const r=await fetch(WH,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({body:item.body,meta:{asesor_nombre:item.asesor,canal:item.canal,timestamp:item.fecha,modo:'CREAR'}})});
+      const r=await fetch(WH,{method:'POST',headers:CONNI_HEADERS,body:JSON.stringify(item.body)});
       const d=await r.json().catch(()=>({}));
-      (d.codigo===0||(d.body&&d.body.codigo===0)||JSON.stringify(d).includes('"codigo":0'))?ok++:fail++;
+      d.codigo===0?ok++:fail++;
     }catch{fail++;}
   }
   if(ok>0)localStorage.removeItem('jm_pend');
