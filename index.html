@@ -752,8 +752,10 @@ function armarBody(){
   // Fecha nacimiento: para naturales usar la ingresada, para jurídicas placeholder
   let fechaNac='19000101';
   if(nat){
-    const fv=document.getElementById('fechaNac')?.value;
-    if(fv) fechaNac=fv.replace(/-/g,''); // YYYY-MM-DD → YYYYMMDD
+    const fv=document.getElementById('fechaNac')?.value; // YYYY-MM-DD
+    if(fv&&fv.length===10){
+      fechaNac=fv.substring(0,4)+fv.substring(5,7)+fv.substring(8,10); // YYYYMMDD
+    }
   }
   return{"Inicial":[{"F_CIA":CIA}],"Terceros":[{
     "F_CIA":CIA,"F_ACTUALIZA_REG":mUpd?"1":"0",
@@ -769,7 +771,7 @@ function armarBody(){
     "F015_ID_PAIS":PAIS,"F015_ID_DEPTO":gv('dep'),"F015_ID_CIUDAD":gv('ciu'),
     "F015_ID_BARRIO":"","F015_TELEFONO":gv('tel'),"F015_FAX":"","F015_COD_POSTAL":"",
     "F015_EMAIL":gv('mail'),"F200_FECHA_NACIMIENTO":fechaNac,"F200_ID_CIIU":"",
-    "F200_IND_NO_DOMICILIADO":"0","F200_IND_ESTADO":"1","F015_CELULAR":gv('cel')
+    "F200_IND_NO_DOMICILIADO":0,"F200_IND_ESTADO":1,"F015_CELULAR":gv('cel')
   }],"Final":[{"F_CIA":CIA}]};
 }
 async function enviar(){
