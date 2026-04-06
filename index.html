@@ -465,7 +465,7 @@ select.fi{background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.o
     </div>
     <!-- Identificación -->
     <div class="fc">
-      <div class="fc-h"><div class="fc-ico">🪪</div><div><div class="fc-t">Identificación</div><div class="fc-s">El NIT consulta la DIAN automáticamente</div></div></div>
+      <div class="fc-h"><div class="fc-ico">🪪</div><div><div class="fc-t">Identificación</div><div class="fc-s">El dígito de verificación del NIT se calcula automáticamente</div></div></div>
       <div class="fc-b">
         <div class="ff">
           <label>Tipo de identificación <span class="req">*</span></label>
@@ -481,7 +481,7 @@ select.fi{background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.o
         </div>
         <div class="f2" id="rNit" style="display:none">
           <div class="ff"><label>NIT <span class="req">*</span></label>
-            <div class="nw"><input class="fi" id="nit" type="tel" placeholder="901234567" maxlength="15" oninput="onNInput(this)" onkeydown="if(event.key==='Enter'){event.preventDefault();onNB()}" onblur="onNB()"><div class="nspin" id="nSpin"></div><div class="nico" id="nIco"></div></div>
+            <div class="nw"><input class="fi" id="nit" type="tel" placeholder="901234567" maxlength="15" oninput="onNInput(this)" onblur="onNB()"><div class="nspin" id="nSpin" style="display:none"></div><div class="nico" id="nIco" style="display:none"></div></div>
             <div class="ferr">Ingresa el NIT</div>
           </div>
           <div class="ff"><label>Dígito verif.</label><input class="fi" id="dv" type="tel" maxlength="1" readonly style="color:var(--text3)" placeholder="Auto"><div class="fhint">Automático</div></div>
@@ -504,7 +504,7 @@ select.fi{background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.o
     </div>
     <!-- Nombre -->
     <div class="fc">
-      <div class="fc-h"><div class="fc-ico">🏷️</div><div><div class="fc-t">Nombre / Razón social</div><div class="fc-s">Completado desde la DIAN cuando es posible</div></div></div>
+      <div class="fc-h"><div class="fc-ico">🏷️</div><div><div class="fc-t">Nombre / Razón social</div><div class="fc-s">Ingresa el nombre exacto como aparece en el RUT</div></div></div>
       <div class="fc-b">
         <div class="ff" id="rRaz"><label>Razón social <span class="req">*</span></label><input class="fi" id="razon" type="text" placeholder="EMPRESA EJEMPLO SAS" oninput="up(this);sNE()"><div class="ferr">Ingresa la razón social</div></div>
         <div id="rNat" style="display:none">
@@ -714,109 +714,15 @@ const up=el=>el.value=el.value.toUpperCase();
 const oN=el=>el.value=el.value.replace(/\D/g,'');
 function cdv(n){if(!n)return'';const p=[3,7,13,17,19,23,29,37,41,43,47,53,59,67,71];let s=0;n.split('').reverse().forEach((d,i)=>s+=parseInt(d)*(p[i%15]));const r=s%11;return r>1?String(11-r):String(r);}
 function lMuni(){const d=gv('dep'),s=document.getElementById('ciu');s.innerHTML='<option value="">Selecciona ciudad...</option>';if(!d||!MU[d])return;MU[d].forEach(([c,n])=>{const o=document.createElement('option');o.value=c;o.textContent=n;s.appendChild(o);});}
-let _nitTimer=null,_nitBusy=false;
+let _nitTimer=null;
 function onNInput(el){
   oN(el);
   const n=el.value.replace(/\D/g,'');
   document.getElementById('dv').value=cdv(n);
-  clearTimeout(_nitTimer);
-  document.getElementById('nIco').style.display='none';
-  if(n.length>=7){
-    _nitTimer=setTimeout(()=>onNB(),700);
-  }
 }
-async function onNB(){
+function onNB(){
   const n=gv('nit').replace(/\D/g,'');
   document.getElementById('dv').value=cdv(n);
-  if(!n||n.length<6){console.log('[NIT] muy corto:',n);return;}
-  if(_nitBusy){console.log('[NIT] busy, skip');return;}
-  _nitBusy=true;
-  clearTimeout(_nitTimer);
-  document.getElementById('nSpin').style.display='block';
-  document.getElementById('nIco').style.display='none';
-  document.getElementById('razon').classList.remove('ok');
-  document.getElementById('nit').classList.remove('ok');
-  console.log('[NIT] buscando:',n);
-
-  let nombre=null;
-
-  // Fuente 1 — datos.gov.co
-  try{
-    console.log('[NIT F1] probando datos.gov.co...');
-    const r=await Promise.race([
-      fetch(`https://www.datos.gov.co/resource/x8dy-gf8y.json?nit=${n}`),
-      new Promise((_,j)=>setTimeout(()=>j('timeout'),4000))
-    ]);
-    if(r&&r.ok){
-      const arr=await r.json();
-      console.log('[NIT F1] respuesta:',arr);
-      if(arr&&arr.length>0)
-        nombre=arr[0].razon_social||arr[0].nombre_contribuyente||arr[0].nombre||null;
-    }else{console.log('[NIT F1] r.ok=false status:',r?.status);}
-  }catch(e){console.log('[NIT F1] error:',e?.message||e);}
-
-  // Fuente 2 — api-colombia (CORS habilitado, datos RUES)
-  if(!nombre){
-    try{
-      console.log('[NIT F2] probando api-colombia...');
-      const r=await Promise.race([
-        fetch(`https://api-colombia.com/api/v1/Company/nit/${n}`),
-        new Promise((_,j)=>setTimeout(()=>j('timeout'),5000))
-      ]);
-      if(r&&r.ok){
-        const d=await r.json();
-        console.log('[NIT F2] respuesta:',d);
-        nombre=d.name||d.razonSocial||d.razon_social||d.nombre||null;
-      }else{console.log('[NIT F2] r.ok=false status:',r?.status);}
-    }catch(e){console.log('[NIT F2] error:',e?.message||e);}
-  }
-
-  // Fuente 3 — webhook n8n relay (misma URL crear-cliente, action=nit, POST)
-  if(!nombre){
-    try{
-      console.log('[NIT F3] probando n8n relay...');
-      const r=await Promise.race([
-        fetch(`https://jotamundial2.app.n8n.cloud/webhook/crear-cliente`,{
-          method:'POST',
-          headers:{'Content-Type':'application/json'},
-          body:JSON.stringify({action:'nit',nit:n})
-        }),
-        new Promise((_,j)=>setTimeout(()=>j('timeout'),8000))
-      ]);
-      if(r&&r.ok){
-        const raw=await r.text();
-        console.log('[NIT F3] raw:',raw);
-        let d={};
-        try{d=JSON.parse(raw);}catch(e){console.log('[NIT F3] parse error');}
-        nombre=d.razonSocial||d.razon_social||d.nombre||d.nombre_contribuyente||
-               (Array.isArray(d)&&d[0]&&(d[0].razonSocial||d[0].razon_social||d[0].nombre))||null;
-        console.log('[NIT F3] nombre extraído:',nombre);
-      }else{console.log('[NIT F3] r.ok=false status:',r?.status);}
-    }catch(e){console.log('[NIT F3] error:',e?.message||e);}
-  }
-
-  _nitBusy=false;
-  document.getElementById('nSpin').style.display='none';
-  const ico=document.getElementById('nIco');
-  console.log('[NIT] resultado final nombre:',nombre);
-  if(nombre){
-    nombre=nombre.toUpperCase().trim();
-    if(gv('tipoT')==='1'||!gv('tipoT')){
-      document.getElementById('razon').value=nombre;
-      document.getElementById('razon').classList.add('ok');
-    }
-    const ne=document.getElementById('nomE');
-    if(!ne._m) ne.value=nombre;
-    document.getElementById('nit').classList.add('ok');
-    ico.textContent='✓';
-    ico.style.cssText='display:block;color:var(--green);font-size:14px;position:absolute;right:11px;top:50%;transform:translateY(-50%)';
-    showToast('Razón social obtenida de la DIAN ✓','ok');
-  }else{
-    ico.textContent='✎';
-    ico.style.cssText='display:block;color:var(--orange);font-size:14px;position:absolute;right:11px;top:50%;transform:translateY(-50%)';
-    showToast('NIT no encontrado — ingresa la razón social','warn');
-    setTimeout(()=>document.getElementById('razon')?.focus(),300);
-  }
 }
 function actUpd(){mUpd=true;document.getElementById('alertaE').classList.remove('show');document.getElementById('bGo').querySelector('.bt').textContent='🔄 Actualizar cliente en SIESA';showToast('Modo actualización activado','warn');}
 function upP(){const c=[canal,gv('tipoId'),gv('tipoId')==='N'?gv('nit'):gv('docN'),gv('tipoT')==='2'?gv('ap1'):gv('razon')];document.getElementById('pFill').style.width=Math.round((c.filter(Boolean).length/c.length)*100)+'%';}
@@ -886,7 +792,7 @@ async function enviar(){
 }
 function cerrarModal(){document.getElementById('modal').classList.remove('open');}
 function nuevoReg(){
-  cerrarModal();mUpd=false;canal='';_nitBusy=false;clearTimeout(_nitTimer);
+  cerrarModal();mUpd=false;canal='';clearTimeout(_nitTimer);
   document.querySelectorAll('.fi').forEach(el=>{if(el.tagName==='SELECT')el.selectedIndex=0;else el.value='';el.classList.remove('err','ok');});
   ['bTrad','bDig'].forEach(id=>document.getElementById(id).classList.remove('st','sd'));
   inds.cli=true;inds.prov=false;inds.emp=false;
