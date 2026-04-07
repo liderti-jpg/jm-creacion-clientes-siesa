@@ -801,7 +801,11 @@ async function enviar(){
   if(!navigator.onLine){saveOff(body,nombre);btn.classList.remove('loading');btn.disabled=false;showToast('Sin conexión — guardado para enviar después','warn');return;}
   try{
     const res=await fetch(WH,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(body)});
-    let data={};try{data=await res.json();}catch(e){}
+    const rawText = await res.text();
+console.log('STATUS:', res.status);
+console.log('RESPONSE RAW:', rawText);
+console.log('BODY ENVIADO:', JSON.stringify(body, null, 2));
+    let data={};try{data=JSON.parse(rawText);}catch(e){}
     const ok=data.codigo===0;
     if(ok){
       document.getElementById('mTitle').textContent=mUpd?'✅ Cliente actualizado':'✅ ¡Cliente creado en SIESA!';
