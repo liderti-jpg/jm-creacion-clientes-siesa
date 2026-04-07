@@ -167,7 +167,7 @@ body{font-family:'Inter',sans-serif;background:var(--ink);height:100%}
 .sa-hdr-top{display:flex;align-items:center;margin-bottom:14px}
 .sa-back{width:34px;height:34px;border-radius:50%;background:rgba(255,255,255,.07);border:1px solid rgba(255,255,255,.11);display:flex;align-items:center;justify-content:center;color:rgba(255,255,255,.6);font-size:18px;cursor:pointer;transition:.18s;flex-shrink:0}
 .sa-back:active{background:rgba(255,255,255,.16)}
-.sa-hdr-center{flex:1;text-align:center;padding-right:34px}/* compensar el back para centrar */
+.sa-hdr-center{flex:1;text-align:center;padding-right:34px}
 .sa-logo{height:28px;mix-blend-mode:screen;margin-bottom:10px;display:block;margin-left:auto;margin-right:auto}
 .sa-title{font-family:'Playfair Display',serif;font-size:19px;font-weight:700;color:#fff;margin-bottom:3px;text-align:center}
 .sa-sub{font-size:11px;color:rgba(255,255,255,.32);letter-spacing:.3px;text-align:center}
@@ -183,7 +183,7 @@ body{font-family:'Inter',sans-serif;background:var(--ink);height:100%}
 .av-ring-inner{position:absolute;inset:-3px;border-radius:50%;background:var(--ink);z-index:0}
 .as-card:active .av-ring{opacity:1}
 .av{width:54px;height:54px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-family:'Playfair Display',serif;font-size:17px;font-weight:700;color:#fff;font-style:italic;letter-spacing:-1px;position:relative;z-index:1}
-.av0{background:linear-gradient(135deg,#1A1A1A,#2C2C2C);border:1.5px solid rgba(184,134,11,.5)}/* JOTA MUNDIAL — negro con borde dorado */
+.av0{background:linear-gradient(135deg,#1A1A1A,#2C2C2C);border:1.5px solid rgba(184,134,11,.5)}
 .av1{background:linear-gradient(135deg,#1E3A6E,#4B7FD4)}
 .av2{background:linear-gradient(135deg,#0A4A3A,#12A87A)}
 .av3{background:linear-gradient(135deg,#4A1A1A,#D44B4B)}
@@ -360,7 +360,6 @@ select.fi{background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.o
   <canvas id="wCanvas"></canvas>
 
   <div class="w-hero">
-    <!-- Fila: logo izquierda + título derecha -->
     <div class="w-hero-row">
       <img class="w-logo" src="https://i.ibb.co/gbVD1bq5/logo-JOTA-MUNDIAL-SAS-original.png" alt="Jota Mundial SAS">
       <div class="w-hero-text">
@@ -370,7 +369,6 @@ select.fi{background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.o
     </div>
     <div class="w-divider"></div>
 
-    <!-- Selector de asesor dentro del hero -->
     <div class="w-asesor-wrap">
       <div class="w-asesor-label">¿Quién eres? — Selecciona tu nombre</div>
       <select class="w-asesor-sel" id="wAsesorSel" onchange="onSelAsesor(this.value)">
@@ -379,7 +377,6 @@ select.fi{background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.o
     </div>
   </div>
 
-  <!-- Módulos -->
   <div class="w-body">
     <div class="w-sec-t">¿Qué deseas hacer?</div>
 
@@ -423,7 +420,6 @@ select.fi{background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.o
       <div class="w-mod-arr">›</div>
     </div>
 
-    <!-- Pendientes offline en hub -->
     <div class="sp-pend" id="spHub">
       <div class="sp-inner">
         <div style="font-weight:700;font-size:13px;color:var(--orange);margin-bottom:4px">📋 Pendientes de enviar</div>
@@ -432,7 +428,7 @@ select.fi{background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.o
       </div>
     </div>
 
-    <div class="w-ver">Jota Mundial SAS · SIESA SBS Producción · v2.0 · 2026</div>
+    <div class="w-ver">Jota Mundial SAS · SIESA SBS Producción · v2.1 · 2026</div>
   </div>
 </div>
 
@@ -628,19 +624,18 @@ function goTo(to,dir){
 const ini=n=>{
   if(n==='JOTA MUNDIAL SAS')return'JM';
   const p=n.split(' ');return(p[0]?.[0]||'')+(p[2]?.[0]||p[1]?.[0]||'');
-};const ape=n=>n==='JOTA MUNDIAL SAS'?'JOTA MUNDIAL':n.split(' ').slice(0,2).join(' ');
+};
+const ape=n=>n==='JOTA MUNDIAL SAS'?'JOTA MUNDIAL':n.split(' ').slice(0,2).join(' ');
 let moduloDest='clientes';
 
-// Poblar el selector de asesores en el hub
 function initAsesorSel(){
   const sel=document.getElementById('wAsesorSel');
-  AS.forEach((a,i)=>{
+  AS.forEach((a)=>{
     const o=document.createElement('option');
     o.value=a.c;
     o.textContent=`${ape(a.n)}  (Cód. ${a.c})`;
     sel.appendChild(o);
   });
-  // Si había asesor guardado, preseleccionarlo
   try{
     const s=localStorage.getItem('jm_as');
     if(s){asesor=JSON.parse(s);sel.value=asesor.c;updUI();}
@@ -670,17 +665,14 @@ function irForm(){if(!asesor){showToast('Selecciona tu nombre primero','warn');r
 function updUI(){
   if(!asesor)return;
   const idx=AS.findIndex(a=>a.c===asesor.c),cls=`av${idx}`;
-  // Header del formulario
   const fav=document.getElementById('fAv');
   if(fav){fav.textContent=ini(asesor.n);fav.className=fav.className.replace(/av\d+/g,'').trim()+' '+cls;}
   const fnm=document.getElementById('fNm');
   if(fnm)fnm.textContent=ape(asesor.n);
 }
 
-function cambiarAsesor(){
-  // En el formulario, al tocar el chip vuelve al hub donde está el selector
-  irMenu();
-}
+function cambiarAsesor(){irMenu();}
+
 function selCanal(v,el,cls){
   canal=v;document.getElementById('canal').value=v;
   document.getElementById('bTrad').classList.remove('st','sd');
@@ -742,6 +734,12 @@ function validar(){
   if(!ok)showToast('Completa los campos obligatorios ✱','warn');
   return ok;
 }
+
+// ─────────────────────────────────────────────────────────────────
+// armarBody — FIX v2.1: todos los campos numéricos de SIESA
+// enviados como strings explícitos para evitar truncamiento
+// al pasar por el Cloudflare Worker (JSON.parse → JSON.stringify)
+// ─────────────────────────────────────────────────────────────────
 function armarBody(){
   const tipo=gv('tipoId'),esN=tipo==='N';
   const nit=esN?gv('nit'):gv('docN'),dVal=esN?gv('dv'):'';
@@ -749,25 +747,51 @@ function armarBody(){
   const a1=nat?gv('ap1'):'',a2=nat?gv('ap2'):'',nms=nat?gv('noms'):'';
   const razon=nat?[a1,a2,nms].filter(Boolean).join(' '):gv('razon');
   const ne=gv('nomE')||razon||[a1,a2,nms].filter(Boolean).join(' ');
-  // Fecha nacimiento hardcodeada - requerida por SIESA
-  const fechaNac='19000101';
-  return{"Inicial":[{"F_CIA":CIA}],"Terceros":[{
-    "F_CIA":CIA,"F_ACTUALIZA_REG":mUpd?"1":"0",
-    "F200_ID":nit,"F200_NIT":nit,"F200_DV_NIT":dVal,
-    "F200_ID_TIPO_IDENT":tipo,"F200_IND_TIPO_TERCERO":gv('tipoT'),
-    "F200_RAZON_SOCIAL":razon,"F200_APELLIDO1":a1,"F200_APELLIDO2":a2,
-    "F200_NOMBRES":nms,"F200_NOMBRE_EST":ne,
-    "F200_IND_CLIENTE":inds.cli?"1":"0","F200_IND_PROVEEDOR":inds.prov?"1":"0",
-    "F200_IND_EMPLEADO":inds.emp?"1":"0","F200_IND_ACCIONISTA":"0",
-    "F200_IND_OTROS":"0","F200_IND_INTERNO":"0",
-    "F015_CONTACTO":gv('ctc'),"F015_DIRECCION1":gv('dir'),
-    "F015_DIRECCION2":`CANAL:${canal}`,"F015_DIRECCION3":`ASESOR:${asesor?.c||''}`,
-    "F015_ID_PAIS":PAIS,"F015_ID_DEPTO":gv('dep'),"F015_ID_CIUDAD":gv('ciu'),
-    "F015_ID_BARRIO":"","F015_TELEFONO":gv('tel'),"F015_FAX":"","F015_COD_POSTAL":"",
-    "F015_EMAIL":gv('mail'),"F200_FECHA_NACIMIENTO":fechaNac,"F200_ID_CIIU":"",
-    "F200_IND_NO_DOMICILIADO":0,"F200_IND_ESTADO":1,"F015_CELULAR":gv('cel')
-  }],"Final":[{"F_CIA":CIA}]};
+
+  return {
+    "Inicial": [{"F_CIA": CIA}],
+    "Terceros": [{
+      "F_CIA":                    CIA,
+      "F_ACTUALIZA_REG":          mUpd ? "1" : "0",
+      "F200_ID":                  nit,
+      "F200_NIT":                 nit,
+      "F200_DV_NIT":              dVal,
+      "F200_ID_TIPO_IDENT":       tipo,
+      "F200_IND_TIPO_TERCERO":    gv('tipoT'),
+      "F200_RAZON_SOCIAL":        razon,
+      "F200_APELLIDO1":           a1,
+      "F200_APELLIDO2":           a2,
+      "F200_NOMBRES":             nms,
+      "F200_NOMBRE_EST":          ne,
+      "F200_IND_CLIENTE":         inds.cli  ? "1" : "0",
+      "F200_IND_PROVEEDOR":       inds.prov ? "1" : "0",
+      "F200_IND_EMPLEADO":        inds.emp  ? "1" : "0",
+      "F200_IND_ACCIONISTA":      "0",
+      "F200_IND_OTROS":           "0",
+      "F200_IND_INTERNO":         "0",
+      "F015_CONTACTO":            gv('ctc'),
+      "F015_DIRECCION1":          gv('dir'),
+      "F015_DIRECCION2":          `CANAL:${canal}`,
+      "F015_DIRECCION3":          `ASESOR:${asesor?.c||''}`,
+      "F015_ID_PAIS":             PAIS,
+      "F015_ID_DEPTO":            gv('dep'),
+      "F015_ID_CIUDAD":           gv('ciu'),
+      "F015_ID_BARRIO":           "",
+      "F015_TELEFONO":            gv('tel'),
+      "F015_FAX":                 "",
+      "F015_COD_POSTAL":          "",
+      "F015_EMAIL":               gv('mail'),
+      "F015_CELULAR":             gv('cel'),
+      // ── Campos críticos: string explícito, 8 dígitos garantizados ──
+      "F200_FECHA_NACIMIENTO":    "19000101",   // string "19000101", nunca número
+      "F200_ID_CIIU":             "0000",        // padding requerido por SIESA
+      "F200_IND_NO_DOMICILIADO":  "0",           // string, no integer
+      "F200_IND_ESTADO":          "1"            // string, no integer
+    }],
+    "Final": [{"F_CIA": CIA}]
+  };
 }
+
 async function enviar(){
   if(!asesor){cambiarAsesor();return;}
   if(!validar())return;
@@ -847,6 +871,7 @@ async function sync(){
 }
 window.addEventListener('offline',()=>document.getElementById('offB').classList.add('show'));
 window.addEventListener('online',()=>{document.getElementById('offB').classList.remove('show');sync();});
+
 /* ── ANTIGRAVITY CANVAS ── */
 function initCanvas(){
   const canvas=document.getElementById('wCanvas');
@@ -859,8 +884,6 @@ function initCanvas(){
   }
   resize();
   window.addEventListener('resize',()=>{resize();});
-
-  // Partículas: mezcla de círculos dorados y navy
   const colors=['rgba(184,134,11,','rgba(212,160,23,','rgba(11,31,74,','rgba(30,58,110,'];
   function mkPart(){
     return{
@@ -877,26 +900,21 @@ function initCanvas(){
   }
   for(let i=0;i<55;i++){
     const p=mkPart();
-    p.y=Math.random()*H;// arrancar distribuidos
+    p.y=Math.random()*H;
     parts.push(p);
   }
-
   function draw(){
     ctx.clearRect(0,0,W,H);
-    // Degradado suave crema sobre el canvas (solo en la mitad inferior)
     const grad=ctx.createLinearGradient(0,H*.45,0,H);
     grad.addColorStop(0,'rgba(248,246,240,0)');
     grad.addColorStop(1,'rgba(248,246,240,0.18)');
     ctx.fillStyle=grad;
     ctx.fillRect(0,0,W,H);
-
     parts.forEach(p=>{
       p.wobble+=p.wobbleSpeed;
       p.x+=p.vx+Math.sin(p.wobble)*0.3;
       p.y+=p.vy;
-      if(p.y<-12||p.x<-20||p.x>W+20){
-        Object.assign(p,mkPart());
-      }
+      if(p.y<-12||p.x<-20||p.x>W+20){Object.assign(p,mkPart());}
       ctx.beginPath();
       ctx.arc(p.x,p.y,p.r,0,Math.PI*2);
       ctx.fillStyle=p.color+p.alpha+')';
