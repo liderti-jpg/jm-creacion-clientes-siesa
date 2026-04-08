@@ -25,35 +25,19 @@
 *{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
 html,body{height:100%;overflow:hidden}
 body{font-family:'Inter',sans-serif;background:var(--ink);height:100%}
-
-/* SCREEN SYSTEM */
-.screen{position:absolute;inset:0;display:flex;flex-direction:column;overflow:hidden;
-  transition:opacity .35s cubic-bezier(.4,0,.2,1),transform .35s cubic-bezier(.4,0,.2,1)}
+.screen{position:absolute;inset:0;display:flex;flex-direction:column;overflow:hidden;transition:opacity .35s cubic-bezier(.4,0,.2,1),transform .35s cubic-bezier(.4,0,.2,1)}
 .screen.hidden{opacity:0;pointer-events:none}
 .screen.off-left{transform:translateX(-100%);opacity:0;pointer-events:none}
 .screen.off-right{transform:translateX(100%);opacity:0;pointer-events:none}
 
-/* ── WELCOME / HUB ── */
+/* HUB */
 #sw{background:var(--cream);overflow:hidden;display:flex;flex-direction:column}
 #wCanvas{position:absolute;inset:0;width:100%;height:100%;pointer-events:none;z-index:0}
-.w-hero{
-  position:relative;z-index:1;flex-shrink:0;
-  background:linear-gradient(135deg,var(--ink) 0%,var(--ink2) 55%,#1E3A6E 100%);
-  padding:56px 28px 36px;
-  display:flex;flex-direction:column;
-  border-radius:0 0 32px 32px;
-  box-shadow:0 10px 36px rgba(7,15,30,.22);
-  overflow:hidden;
-}
-@supports(padding-top:env(safe-area-inset-top)){
-  .w-hero{padding-top:max(56px,calc(env(safe-area-inset-top)+44px))}
-}
-@media(min-width:768px){.w-hero{padding:64px 48px 40px;}}
+.w-hero{position:relative;z-index:1;flex-shrink:0;background:linear-gradient(135deg,var(--ink) 0%,var(--ink2) 55%,#1E3A6E 100%);padding:56px 28px 36px;display:flex;flex-direction:column;border-radius:0 0 32px 32px;box-shadow:0 10px 36px rgba(7,15,30,.22);overflow:hidden;}
+@supports(padding-top:env(safe-area-inset-top)){.w-hero{padding-top:max(56px,calc(env(safe-area-inset-top)+44px))}}
 .w-hero:before{content:'';position:absolute;right:-30px;top:-30px;width:180px;height:180px;border-radius:50%;background:radial-gradient(circle,rgba(184,134,11,.12),transparent 70%);}
 .w-hero-row{display:flex;align-items:center;gap:20px;position:relative;z-index:1;}
-@media(min-width:768px){.w-hero-row{gap:28px;}}
 .w-logo{height:60px;width:auto;flex-shrink:0;filter:drop-shadow(0 4px 12px rgba(184,134,11,.4));}
-@media(min-width:768px){.w-logo{height:76px;}}
 .w-hero-text{flex:1}
 .w-title{font-family:'Playfair Display',serif;font-size:clamp(22px,3.5vw,38px);font-weight:700;color:#fff;line-height:1.2;margin-bottom:4px;}
 .w-title em{color:var(--gold2);font-style:normal}
@@ -66,17 +50,14 @@ body{font-family:'Inter',sans-serif;background:var(--ink);height:100%}
 .w-asesor-sel option{background:var(--ink);color:#fff}
 .w-body{position:relative;z-index:1;flex:1;overflow-y:auto;padding:28px clamp(16px,5vw,48px) calc(env(safe-area-inset-bottom,0px)+24px);max-width:720px;width:100%;margin:0 auto;}
 .w-body::-webkit-scrollbar{display:none}
-@media(min-width:768px){.w-body{padding:36px 48px calc(env(safe-area-inset-bottom,0px)+32px);}}
 .w-sec-t{font-size:10px;font-weight:700;color:var(--text3);text-transform:uppercase;letter-spacing:1.2px;margin-bottom:16px;}
 .w-mod{background:#fff;border:1.5px solid var(--border);border-radius:16px;padding:18px;margin-bottom:10px;cursor:pointer;transition:all .22s;display:flex;align-items:center;gap:16px;box-shadow:0 2px 14px rgba(7,15,30,.06);}
-@media(min-width:768px){.w-mod{padding:20px 22px;gap:20px;border-radius:18px;}}
 .w-mod:hover{box-shadow:0 6px 24px rgba(7,15,30,.1);transform:translateY(-1px)}
 .w-mod:active{transform:scale(.98) translateY(0)}
 .w-mod-active{border-left:4px solid var(--gold2)}
 .w-mod.disabled{opacity:.48;cursor:not-allowed}
 .w-mod.disabled:hover{transform:none;box-shadow:0 2px 14px rgba(7,15,30,.06)}
 .w-mod-ico{width:52px;height:52px;border-radius:14px;display:flex;align-items:center;justify-content:center;font-size:24px;flex-shrink:0}
-@media(min-width:768px){.w-mod-ico{width:58px;height:58px;font-size:26px;}}
 .wic-g{background:linear-gradient(135deg,#E6F7F2,#C8EFE4)}
 .wic-b{background:linear-gradient(135deg,var(--blue3),#D4E4FF)}
 .wic-o{background:linear-gradient(135deg,#FFF8E7,#FFE9A0)}
@@ -84,7 +65,6 @@ body{font-family:'Inter',sans-serif;background:var(--ink);height:100%}
 .w-mod-inf{flex:1}
 .w-mod-t{font-size:15px;font-weight:700;color:var(--text);margin-bottom:3px}
 .w-mod-s{font-size:12px;color:var(--text3);line-height:1.4}
-@media(min-width:768px){.w-mod-t{font-size:16px;}.w-mod-s{font-size:13px;}}
 .w-mod-badge{display:inline-block;font-size:9px;font-weight:700;padding:3px 10px;border-radius:99px;margin-top:6px;letter-spacing:.5px}
 .wb-active{background:linear-gradient(135deg,var(--gold),var(--gold2));color:#fff}
 .wb-soon{background:#ECEEF5;color:var(--text3)}
@@ -92,10 +72,9 @@ body{font-family:'Inter',sans-serif;background:var(--ink);height:100%}
 .w-mod:not(.disabled):hover .w-mod-arr{color:var(--gold2);transform:translateX(2px)}
 .w-ver{text-align:center;padding:10px 0 2px;font-size:10px;color:var(--text3);letter-spacing:.4px}
 
-/* ── FORM SCREEN ── */
+/* FORM */
 #sf{background:#F2F4F9}
 .f-hdr{background:var(--ink);padding:calc(env(safe-area-inset-top,0px)+10px) 16px 10px;display:flex;align-items:center;gap:10px;flex-shrink:0;box-shadow:0 2px 14px rgba(7,15,30,.22)}
-@media(min-width:768px){.f-hdr{padding:14px 28px;}.f-hdr-t{font-size:16px;}}
 .f-back{width:34px;height:34px;border-radius:50%;background:rgba(255,255,255,.07);border:1px solid rgba(255,255,255,.11);display:flex;align-items:center;justify-content:center;color:rgba(255,255,255,.65);font-size:18px;cursor:pointer;transition:.18s;flex-shrink:0}
 .f-back:active{background:rgba(255,255,255,.16)}
 .f-hdr-info{flex:1}
@@ -121,18 +100,28 @@ body{font-family:'Inter',sans-serif;background:var(--ink);height:100%}
 label{font-size:10px;font-weight:700;color:var(--text3);text-transform:uppercase;letter-spacing:.6px;display:flex;align-items:center;gap:3px}
 .req{color:var(--red);font-size:12px;line-height:1}
 .fi{background:#F2F4F9;border:1.5px solid var(--border);border-radius:var(--rs);padding:12px 13px;font-size:15px;color:var(--text);font-family:'Inter',sans-serif;outline:none;transition:.18s;width:100%;-webkit-appearance:none}
-@media(min-width:768px){.fi{padding:13px 15px;font-size:15px;}.fc-t{font-size:15px;}.fc-b{padding:16px 18px;gap:15px;}.fc-h{padding:14px 18px;}}
 .fi:focus{border-color:var(--blue);background:#fff;box-shadow:0 0 0 3px rgba(59,111,212,.1)}
 .fi.err{border-color:var(--red);background:var(--red2)}
 .fi.ok{border-color:var(--green);background:#F0FDF9}
 .fi:disabled{opacity:.5}
+/* Campo autorelleno — animación verde flash */
+.fi.autofilled{border-color:var(--green);background:var(--green2);animation:flashFill .6s ease;}
+@keyframes flashFill{0%{background:rgba(10,122,90,.25)}100%{background:var(--green2)}}
 select.fi{background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='6'%3E%3Cpath d='M1 1l4 4 4-4' stroke='%237A90B8' stroke-width='1.5' fill='none' stroke-linecap='round'/%3E%3C/svg%3E");background-repeat:no-repeat;background-position:right 11px center;padding-right:28px}
 .fhint{font-size:10px;color:var(--text3);margin-top:2px}
 .ferr{font-size:10px;color:var(--red);font-weight:600;margin-top:2px;display:none}
 .fi.err~.ferr{display:block}
+/* Indicador de búsqueda Verifik */
+.vwrap{position:relative}
+.vspin{position:absolute;right:11px;top:50%;transform:translateY(-50%);width:14px;height:14px;border:2px solid var(--border);border-top-color:var(--blue);border-radius:50%;animation:sp 1s linear infinite;display:none}
+.vico{position:absolute;right:11px;top:50%;transform:translateY(-50%);font-size:14px;display:none}
+@keyframes sp{to{transform:translateY(-50%) rotate(360deg)}}
+/* Badge Verifik */
+.vbadge{display:inline-flex;align-items:center;gap:4px;background:var(--green2);border:1px solid var(--green);border-radius:99px;padding:3px 9px;font-size:9px;font-weight:700;color:var(--green);margin-top:4px;display:none}
+.vbadge.show{display:inline-flex}
+.vbadge-warn{background:#FFF7ED;border-color:var(--orange);color:var(--orange)}
 .nw{position:relative}
 .nspin{position:absolute;right:11px;top:50%;transform:translateY(-50%);width:14px;height:14px;border:2px solid var(--border);border-top-color:var(--blue);border-radius:50%;animation:sp 1s linear infinite;display:none}
-@keyframes sp{to{transform:translateY(-50%) rotate(360deg)}}
 .nico{position:absolute;right:11px;top:50%;transform:translateY(-50%);font-size:14px;display:none}
 .alerta{background:#FFF7ED;border:1.5px solid var(--orange);border-radius:var(--rs);padding:10px 12px;display:none}
 .alerta.show{display:block}
@@ -165,8 +154,6 @@ select.fi{background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.o
 .bspi{width:17px;height:17px;border:2px solid rgba(255,255,255,.3);border-top-color:#fff;border-radius:50%;animation:sp 1s linear infinite;display:none}
 .bsub.loading .bspi{display:block}
 .bsub.loading .bt{display:none}
-
-/* GLOBAL UI */
 .offb{position:fixed;top:0;left:0;right:0;background:var(--orange);color:#fff;text-align:center;padding:8px;padding-top:calc(env(safe-area-inset-top,0px)+8px);font-size:12px;font-weight:600;z-index:999;display:none}
 .offb.show{display:block}
 .toastEl{position:fixed;top:calc(env(safe-area-inset-top,0px)+72px);left:50%;transform:translateX(-50%) translateY(-14px);background:var(--ink);color:#fff;border-radius:99px;padding:10px 20px;font-size:13px;font-weight:600;box-shadow:0 8px 28px rgba(7,15,30,.22);z-index:500;opacity:0;transition:.28s;white-space:nowrap;max-width:92vw;text-align:center}
@@ -180,7 +167,6 @@ select.fi{background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.o
 .mt{font-size:17px;font-weight:700;color:var(--text);margin-bottom:5px}
 .mi{font-size:13px;color:var(--text2);line-height:1.5;margin-bottom:7px}
 .md{font-family:'JetBrains Mono',monospace;font-size:11px;color:var(--text3);background:#F2F4F9;border-radius:9px;padding:9px 12px;text-align:left;margin-bottom:16px;line-height:1.8;white-space:pre-wrap}
-/* Chips de estado para modal */
 .m-chips{display:flex;gap:8px;justify-content:center;flex-wrap:wrap;margin-bottom:14px}
 .m-chip-st{display:flex;align-items:center;gap:5px;border-radius:99px;padding:5px 12px;font-size:11px;font-weight:700}
 .mcs-ok{background:var(--green2);color:var(--green);border:1.5px solid var(--green)}
@@ -199,7 +185,6 @@ select.fi{background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.o
     <div class="mchk" id="mChk">✓</div>
     <div class="mt" id="mTitle">¡Cliente creado!</div>
     <div class="mi" id="mInfo"></div>
-    <!-- Chips de estado Tercero + Sucursal -->
     <div class="m-chips" id="mChips"></div>
     <div class="md" id="mDetail"></div>
     <button class="bn" onclick="nuevoReg()">➕ Registrar otro cliente</button>
@@ -207,7 +192,7 @@ select.fi{background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.o
   </div>
 </div>
 
-<!-- S1: WELCOME / HUB -->
+<!-- HUB -->
 <div class="screen" id="sw">
   <canvas id="wCanvas"></canvas>
   <div class="w-hero">
@@ -228,7 +213,7 @@ select.fi{background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.o
   </div>
   <div class="w-body">
     <div class="w-sec-t">¿Qué deseas hacer?</div>
-    <div class="w-mod w-mod-active" id="modClientes" onclick="lanzarModulo('clientes')">
+    <div class="w-mod w-mod-active" onclick="lanzarModulo('clientes')">
       <div class="w-mod-ico wic-g">👤</div>
       <div class="w-mod-inf">
         <div class="w-mod-t">Creación de clientes</div>
@@ -271,11 +256,11 @@ select.fi{background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.o
         <button onclick="sync()" style="margin-top:8px;background:var(--orange);color:#fff;border:none;border-radius:8px;padding:6px 13px;font-size:12px;font-weight:700;cursor:pointer;font-family:'Inter',sans-serif">↑ Sincronizar ahora</button>
       </div>
     </div>
-    <div class="w-ver">Jota Mundial SAS · SIESA SBS Producción · v2.1 · 2026</div>
+    <div class="w-ver">Jota Mundial SAS · SIESA SBS Producción · v2.2 · 2026</div>
   </div>
 </div>
 
-<!-- S3: FORM -->
+<!-- FORM -->
 <div class="screen hidden" id="sf">
   <div class="f-hdr">
     <div class="f-back" onclick="irMenu()">‹</div>
@@ -302,9 +287,10 @@ select.fi{background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.o
         <input type="hidden" id="canal">
       </div>
     </div>
+
     <!-- Identificación -->
     <div class="fc">
-      <div class="fc-h"><div class="fc-ico">🪪</div><div><div class="fc-t">Identificación</div><div class="fc-s">El dígito de verificación del NIT se calcula automáticamente</div></div></div>
+      <div class="fc-h"><div class="fc-ico">🪪</div><div><div class="fc-t">Identificación</div><div class="fc-s">El nombre se autorellena automáticamente al ingresar el documento</div></div></div>
       <div class="fc-b">
         <div class="ff">
           <label>Tipo de identificación <span class="req">*</span></label>
@@ -318,19 +304,40 @@ select.fi{background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.o
           </select>
           <div class="ferr">Selecciona el tipo</div>
         </div>
+        <!-- NIT -->
         <div class="f2" id="rNit" style="display:none">
           <div class="ff"><label>NIT <span class="req">*</span></label>
-            <div class="nw"><input class="fi" id="nit" type="tel" placeholder="901234567" maxlength="15" oninput="onNInput(this)" onblur="onNB()"><div class="nspin" id="nSpin" style="display:none"></div><div class="nico" id="nIco" style="display:none"></div></div>
+            <div class="vwrap">
+              <input class="fi" id="nit" type="tel" placeholder="901234567" maxlength="15"
+                oninput="onNInput(this)" onblur="onNB()">
+              <div class="vspin" id="vSpinNit"></div>
+              <div class="vico" id="vIcoNit"></div>
+            </div>
             <div class="ferr">Ingresa el NIT</div>
+            <span class="vbadge" id="vBadgeNit">✓ Autorelleno desde RUES</span>
           </div>
-          <div class="ff"><label>Dígito verif.</label><input class="fi" id="dv" type="tel" maxlength="1" readonly style="color:var(--text3)" placeholder="Auto"><div class="fhint">Automático</div></div>
+          <div class="ff"><label>Dígito verif.</label>
+            <input class="fi" id="dv" type="tel" maxlength="1" readonly style="color:var(--text3)" placeholder="Auto">
+            <div class="fhint">Automático</div>
+          </div>
         </div>
+        <!-- Cédula / otros -->
         <div class="ff" id="rDoc" style="display:none">
           <label>Número de documento <span class="req">*</span></label>
-          <input class="fi" id="docN" type="tel" placeholder="1234567890" maxlength="15" oninput="oN(this)">
+          <div class="vwrap">
+            <input class="fi" id="docN" type="tel" placeholder="1234567890" maxlength="15"
+              oninput="onDocInput(this)">
+            <div class="vspin" id="vSpinDoc"></div>
+            <div class="vico" id="vIcoDoc"></div>
+          </div>
           <div class="ferr">Ingresa el número</div>
+          <span class="vbadge" id="vBadgeDoc">✓ Autorelleno desde Registraduría/DIAN</span>
         </div>
-        <div class="alerta" id="alertaE"><div class="alerta-t">⚠️ Este NIT ya existe en SIESA</div><div class="alerta-d" id="alertaED"></div><button class="btn-upd" onclick="actUpd()">Actualizar datos</button></div>
+        <div class="alerta" id="alertaE">
+          <div class="alerta-t">⚠️ Este NIT ya existe en SIESA</div>
+          <div class="alerta-d" id="alertaED"></div>
+          <button class="btn-upd" onclick="actUpd()">Actualizar datos</button>
+        </div>
         <div class="ff" id="rTipoT">
           <label>Tipo de persona <span class="req">*</span></label>
           <div class="tg">
@@ -341,11 +348,16 @@ select.fi{background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.o
         </div>
       </div>
     </div>
+
     <!-- Nombre -->
     <div class="fc">
       <div class="fc-h"><div class="fc-ico">🏷️</div><div><div class="fc-t">Nombre / Razón social</div><div class="fc-s">Ingresa el nombre exacto como aparece en el RUT</div></div></div>
       <div class="fc-b">
-        <div class="ff" id="rRaz"><label>Razón social <span class="req">*</span></label><input class="fi" id="razon" type="text" placeholder="EMPRESA EJEMPLO SAS" oninput="up(this);sNE()"><div class="ferr">Ingresa la razón social</div></div>
+        <div class="ff" id="rRaz">
+          <label>Razón social <span class="req">*</span></label>
+          <input class="fi" id="razon" type="text" placeholder="EMPRESA EJEMPLO SAS" oninput="up(this);sNE()">
+          <div class="ferr">Ingresa la razón social</div>
+        </div>
         <div id="rNat" style="display:none">
           <div class="f2" style="margin-bottom:10px">
             <div class="ff"><label>Primer apellido <span class="req">*</span></label><input class="fi" id="ap1" type="text" placeholder="GARCÍA" oninput="up(this);sNE()"><div class="ferr">Requerido</div></div>
@@ -353,7 +365,11 @@ select.fi{background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.o
           </div>
           <div class="ff"><label>Nombres <span class="req">*</span></label><input class="fi" id="noms" type="text" placeholder="CARLOS ANDRÉS" oninput="up(this);sNE()"><div class="ferr">Requerido</div></div>
         </div>
-        <div class="ff"><label>Nombre comercial</label><input class="fi" id="nomE" type="text" placeholder="Automático" oninput="up(this)"><div class="fhint">Como aparece en facturas</div></div>
+        <div class="ff">
+          <label>Nombre comercial</label>
+          <input class="fi" id="nomE" type="text" placeholder="Automático" oninput="up(this)">
+          <div class="fhint">Como aparece en facturas</div>
+        </div>
         <div class="ff"><label>Clasificación <span class="req">*</span></label>
           <div class="ig">
             <div class="ib active" id="iCli" onclick="tInd('cli',this)"><span class="ii">🛒</span><span class="il">Cliente</span></div>
@@ -363,6 +379,7 @@ select.fi{background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.o
         </div>
       </div>
     </div>
+
     <!-- Contacto -->
     <div class="fc">
       <div class="fc-h"><div class="fc-ico">📍</div><div><div class="fc-t">Contacto y ubicación</div><div class="fc-s">Información de contacto en Colombia</div></div></div>
@@ -396,6 +413,7 @@ select.fi{background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.o
         <div class="ff"><label>Persona de contacto</label><input class="fi" id="ctc" type="text" placeholder="Juan Pérez" oninput="up(this)"></div>
       </div>
     </div>
+
     <div class="sp-pend" id="spForm">
       <div class="sp-inner">
         <div style="font-weight:700;font-size:13px;color:var(--orange);margin-bottom:4px">📋 Pendientes de enviar</div>
@@ -413,7 +431,7 @@ select.fi{background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.o
 </div>
 
 <script>
-const WH = 'https://jm-connekta-proxy.liderti-62c.workers.dev/';
+const WH  = 'https://jm-connekta-proxy.liderti-62c.workers.dev/';
 const CIA = '1', PAIS = '169';
 
 const AS = [
@@ -429,7 +447,6 @@ const AS = [
   {c:'016',n:'CAÑAS MUÑOZ JULIAN ANDRES'},
   {c:'017',n:'VELEZ GIRALDO MARIA CAMILA'},
 ];
-
 const MU = {
   '05':[['05001','Medellín'],['05045','Apartadó'],['05088','Bello'],['05266','Envigado'],['05360','Itagüí'],['05615','Rionegro']],
   '08':[['08001','Barranquilla'],['08758','Soledad']],
@@ -459,6 +476,7 @@ const MU = {
 let asesor = null, mUpd = false, canal = '';
 const inds = {cli:true, prov:false, emp:false};
 let cur = 'sw';
+let _vTimer = null; // timer debounce Verifik
 
 /* ── NAVEGACIÓN ── */
 function goTo(to, dir) {
@@ -469,48 +487,145 @@ function goTo(to, dir) {
   cur = to;
   setTimeout(() => from.classList.add('hidden'), 360);
 }
-const ini = n => {
-  if(n === 'JOTA MUNDIAL SAS') return 'JM';
-  const p = n.split(' '); return (p[0]?.[0]||'') + (p[2]?.[0] || p[1]?.[0] || '');
-};
-const ape = n => n === 'JOTA MUNDIAL SAS' ? 'JOTA MUNDIAL' : n.split(' ').slice(0,2).join(' ');
+const ini = n => { if(n==='JOTA MUNDIAL SAS') return 'JM'; const p=n.split(' '); return (p[0]?.[0]||'')+(p[2]?.[0]||p[1]?.[0]||''); };
+const ape = n => n==='JOTA MUNDIAL SAS' ? 'JOTA MUNDIAL' : n.split(' ').slice(0,2).join(' ');
 
 /* ── ASESOR ── */
 function initAsesorSel() {
   const sel = document.getElementById('wAsesorSel');
-  AS.forEach(a => {
-    const o = document.createElement('option');
-    o.value = a.c;
-    o.textContent = `${ape(a.n)}  (Cód. ${a.c})`;
-    sel.appendChild(o);
-  });
-  try {
-    const s = localStorage.getItem('jm_as');
-    if(s){ asesor = JSON.parse(s); sel.value = asesor.c; updUI(); }
-  } catch(e) {}
+  AS.forEach(a => { const o=document.createElement('option'); o.value=a.c; o.textContent=`${ape(a.n)}  (Cód. ${a.c})`; sel.appendChild(o); });
+  try { const s=localStorage.getItem('jm_as'); if(s){ asesor=JSON.parse(s); sel.value=asesor.c; updUI(); } } catch(e){}
 }
 function onSelAsesor(cod) {
-  if(!cod){ asesor = null; localStorage.removeItem('jm_as'); updUI(); return; }
-  asesor = AS.find(a => a.c === cod);
+  if(!cod){ asesor=null; localStorage.removeItem('jm_as'); updUI(); return; }
+  asesor = AS.find(a => a.c===cod);
   localStorage.setItem('jm_as', JSON.stringify(asesor));
   updUI();
 }
 function lanzarModulo(modulo) {
   if(!asesor){ showToast('Primero selecciona tu nombre arriba ↑','warn'); document.getElementById('wAsesorSel').focus(); return; }
-  if(modulo === 'clientes') goTo('sf','r');
+  if(modulo==='clientes') goTo('sf','r');
 }
 function irMenu() { cerrarModal(); goTo('sw','l'); }
 function updUI() {
   if(!asesor) return;
-  const idx = AS.findIndex(a => a.c === asesor.c), cls = `av${idx}`;
+  const idx = AS.findIndex(a => a.c===asesor.c), cls = `av${idx}`;
   const fav = document.getElementById('fAv');
-  if(fav){ fav.textContent = ini(asesor.n); fav.className = fav.className.replace(/av\d+/g,'').trim() + ' ' + cls; }
+  if(fav){ fav.textContent=ini(asesor.n); fav.className=fav.className.replace(/av\d+/g,'').trim()+' '+cls; }
   const fnm = document.getElementById('fNm');
   if(fnm) fnm.textContent = ape(asesor.n);
 }
 function cambiarAsesor() { irMenu(); }
 
-/* ── FORM HELPERS ── */
+/* ── VERIFIK AUTORELLENO ── */
+async function consultarVerifik(numero, tipo) {
+  // Mostrar spinner
+  const spinId  = tipo==='N' ? 'vSpinNit' : 'vSpinDoc';
+  const icoId   = tipo==='N' ? 'vIcoNit'  : 'vIcoDoc';
+  const badgeId = tipo==='N' ? 'vBadgeNit': 'vBadgeDoc';
+  const spin = document.getElementById(spinId);
+  const ico  = document.getElementById(icoId);
+  const badge= document.getElementById(badgeId);
+
+  spin.style.display = 'block';
+  ico.style.display  = 'none';
+  badge.classList.remove('show');
+
+  try {
+    const res  = await fetch(`${WH}?doc=verifik&documentNumber=${numero}&documentType=${tipo}`);
+    const data = await res.json();
+
+    spin.style.display = 'none';
+
+    if(data.found) {
+      if(data.tipo === 'juridica') {
+        // Autorelleno jurídica
+        setAutoFill('razon', data.razonSocial);
+        setAutoFill('nomE',  data.nombreEst);
+        // Asegurar que el tipo sea jurídica
+        if(gv('tipoT') !== '2') {
+          document.getElementById('tipoT').value = '2';
+          document.getElementById('bJur').classList.add('active');
+          document.getElementById('bNat').classList.remove('active');
+          document.getElementById('rRaz').style.display = 'block';
+          document.getElementById('rNat').style.display = 'none';
+        }
+      } else {
+        // Autorelleno natural
+        setAutoFill('ap1',  data.apellido1);
+        setAutoFill('ap2',  data.apellido2);
+        setAutoFill('noms', data.nombres);
+        sNE();
+        // Asegurar que el tipo sea natural
+        if(gv('tipoT') !== '1') {
+          document.getElementById('tipoT').value = '1';
+          document.getElementById('bNat').classList.add('active');
+          document.getElementById('bJur').classList.remove('active');
+          document.getElementById('rRaz').style.display = 'none';
+          document.getElementById('rNat').style.display = 'block';
+        }
+      }
+      ico.textContent = '✓'; ico.style.color = 'var(--green)'; ico.style.display = 'block';
+      badge.classList.remove('vbadge-warn'); badge.classList.add('show');
+      showToast('✓ Nombre autorelleno desde fuente oficial','ok');
+    } else {
+      ico.textContent = '?'; ico.style.color = 'var(--text3)'; ico.style.display = 'block';
+      badge.textContent = '⚠ No encontrado — ingresa manualmente';
+      badge.classList.add('vbadge-warn','show');
+    }
+  } catch(e) {
+    spin.style.display = 'none';
+    ico.textContent = '!'; ico.style.color = 'var(--orange)'; ico.style.display = 'block';
+  }
+  upP();
+}
+
+function setAutoFill(id, value) {
+  const el = document.getElementById(id);
+  if(!el || !value) return;
+  el.value = value.toUpperCase();
+  el.classList.remove('err');
+  el.classList.add('autofilled');
+  setTimeout(() => el.classList.remove('autofilled'), 2000);
+}
+
+// Debounce: espera 1.5s después de que el usuario deja de escribir
+function triggerVerifik(numero, tipo) {
+  clearTimeout(_vTimer);
+  const minLen = tipo === 'N' ? 7 : 6;
+  if(numero.length < minLen) return;
+  _vTimer = setTimeout(() => consultarVerifik(numero, tipo), 1500);
+}
+
+/* ── INPUT HANDLERS ── */
+function onNInput(el) {
+  oN(el);
+  document.getElementById('dv').value = cdv(el.value.replace(/\D/g,''));
+  triggerVerifik(el.value.replace(/\D/g,''), 'N');
+}
+function onNB() {
+  document.getElementById('dv').value = cdv(gv('nit').replace(/\D/g,''));
+}
+function onDocInput(el) {
+  oN(el);
+  const tipo = gv('tipoId');
+  // Solo consultar para cédula y extranjería (P=pasaporte no tiene base de datos pública confiable)
+  if(tipo === 'C' || tipo === 'E') triggerVerifik(el.value.replace(/\D/g,''), tipo);
+}
+
+function onTC() {
+  const t = gv('tipoId');
+  document.getElementById('rNit').style.display  = t==='N' ? 'grid' : 'none';
+  document.getElementById('rDoc').style.display  = (t && t!=='N') ? 'block' : 'none';
+  ['nit','dv','docN'].forEach(id => { const e=document.getElementById(id); if(e){ e.value=''; e.className='fi'; } });
+  document.getElementById('alertaE').classList.remove('show');
+  // Limpiar indicadores Verifik
+  ['vSpinNit','vSpinDoc','vIcoNit','vIcoDoc'].forEach(id => { const e=document.getElementById(id); if(e) e.style.display='none'; });
+  ['vBadgeNit','vBadgeDoc'].forEach(id => { const e=document.getElementById(id); if(e) e.classList.remove('show'); });
+  clearTimeout(_vTimer);
+  upP();
+}
+
 function selCanal(v, el, cls) {
   canal = v; document.getElementById('canal').value = v;
   document.getElementById('bTrad').classList.remove('st','sd');
@@ -519,387 +634,210 @@ function selCanal(v, el, cls) {
   document.getElementById('eCanal').style.display = 'none';
   upP();
 }
-function onTC() {
-  const t = gv('tipoId');
-  document.getElementById('rNit').style.display = t === 'N' ? 'grid' : 'none';
-  document.getElementById('rDoc').style.display = (t && t !== 'N') ? 'block' : 'none';
-  ['nit','dv','docN'].forEach(id => { const e = document.getElementById(id); if(e){ e.value = ''; e.className = 'fi'; } });
-  document.getElementById('alertaE').classList.remove('show');
-  document.getElementById('nIco').style.display = 'none';
-  upP();
-}
 function selT(v, el) {
   document.getElementById('tipoT').value = v;
   document.querySelectorAll('.tb').forEach(b => b.classList.remove('active'));
   el.classList.add('active');
-  document.getElementById('rRaz').style.display = v === '1' ? 'none' : 'block';
-  document.getElementById('rNat').style.display = v === '1' ? 'block' : 'none';
+  document.getElementById('rRaz').style.display = v==='1' ? 'none' : 'block';
+  document.getElementById('rNat').style.display = v==='1' ? 'block' : 'none';
   sNE();
 }
-function tInd(k, el) { inds[k] = !inds[k]; el.classList.toggle('active', inds[k]); }
+function tInd(k, el) { inds[k]=!inds[k]; el.classList.toggle('active', inds[k]); }
 function sNE() {
   const ne = document.getElementById('nomE'); if(ne._m) return;
   const t = gv('tipoT');
-  ne.value = t === '1' ? [gv('ap1'),gv('ap2'),gv('noms')].filter(Boolean).join(' ') : gv('razon');
+  ne.value = t==='1' ? [gv('ap1'),gv('ap2'),gv('noms')].filter(Boolean).join(' ') : gv('razon');
 }
 document.getElementById('nomE').addEventListener('input', function(){ this._m = !!this.value; });
-const gv = id => document.getElementById(id)?.value?.trim() || '';
-const up = el => el.value = el.value.toUpperCase();
-const oN = el => el.value = el.value.replace(/\D/g,'');
+const gv  = id => document.getElementById(id)?.value?.trim()||'';
+const up  = el => el.value = el.value.toUpperCase();
+const oN  = el => el.value = el.value.replace(/\D/g,'');
 function cdv(n) {
   if(!n) return '';
-  const p = [3,7,13,17,19,23,29,37,41,43,47,53,59,67,71];
-  let s = 0;
-  n.split('').reverse().forEach((d,i) => s += parseInt(d) * (p[i%15]));
-  const r = s % 11; return r > 1 ? String(11-r) : String(r);
+  const p=[3,7,13,17,19,23,29,37,41,43,47,53,59,67,71];
+  let s=0; n.split('').reverse().forEach((d,i) => s+=parseInt(d)*(p[i%15]));
+  const r=s%11; return r>1 ? String(11-r) : String(r);
 }
 function lMuni() {
-  const d = gv('dep'), s = document.getElementById('ciu');
-  s.innerHTML = '<option value="">Selecciona ciudad...</option>';
-  if(!d || !MU[d]) return;
-  MU[d].forEach(([c,n]) => { const o = document.createElement('option'); o.value = c; o.textContent = n; s.appendChild(o); });
+  const d=gv('dep'), s=document.getElementById('ciu');
+  s.innerHTML='<option value="">Selecciona ciudad...</option>';
+  if(!d||!MU[d]) return;
+  MU[d].forEach(([c,n]) => { const o=document.createElement('option'); o.value=c; o.textContent=n; s.appendChild(o); });
 }
-let _nitTimer = null;
-function onNInput(el) { oN(el); document.getElementById('dv').value = cdv(el.value.replace(/\D/g,'')); }
-function onNB() { document.getElementById('dv').value = cdv(gv('nit').replace(/\D/g,'')); }
-function actUpd() { mUpd = true; document.getElementById('alertaE').classList.remove('show'); document.getElementById('bGo').querySelector('.bt').textContent = '🔄 Actualizar cliente en SIESA'; showToast('Modo actualización activado','warn'); }
+function actUpd() { mUpd=true; document.getElementById('alertaE').classList.remove('show'); document.getElementById('bGo').querySelector('.bt').textContent='🔄 Actualizar cliente en SIESA'; showToast('Modo actualización activado','warn'); }
 function upP() {
-  const c = [canal, gv('tipoId'), gv('tipoId')==='N' ? gv('nit') : gv('docN'), gv('tipoT')==='1' ? gv('ap1') : gv('razon')];
-  document.getElementById('pFill').style.width = Math.round((c.filter(Boolean).length / c.length) * 100) + '%';
+  const c=[canal,gv('tipoId'),gv('tipoId')==='N'?gv('nit'):gv('docN'),gv('tipoT')==='1'?gv('ap1'):gv('razon')];
+  document.getElementById('pFill').style.width = Math.round((c.filter(Boolean).length/c.length)*100)+'%';
 }
 document.querySelectorAll('.fi').forEach(e => e.addEventListener('input', upP));
 
 /* ── VALIDACIÓN ── */
 function validar() {
-  let ok = true;
-  if(!canal){ document.getElementById('eCanal').style.display = 'block'; ok = false; }
+  let ok=true;
+  if(!canal){ document.getElementById('eCanal').style.display='block'; ok=false; }
   const chk = id => {
-    const el = document.getElementById(id); if(!el) return true;
-    let p = el.parentElement;
-    while(p){ if(p.style && p.style.display === 'none') return true; p = p.parentElement; }
-    if(!el.value.trim()){ el.classList.add('err'); ok = false; return false; }
+    const el=document.getElementById(id); if(!el) return true;
+    let p=el.parentElement; while(p){ if(p.style&&p.style.display==='none') return true; p=p.parentElement; }
+    if(!el.value.trim()){ el.classList.add('err'); ok=false; return false; }
     el.classList.remove('err'); return true;
   };
   chk('tipoId');
-  if(gv('tipoId') === 'N') chk('nit'); else chk('docN');
-  if(gv('tipoT') === '1'){ chk('ap1'); chk('noms'); } else chk('razon');
+  if(gv('tipoId')==='N') chk('nit'); else chk('docN');
+  if(gv('tipoT')==='1'){ chk('ap1'); chk('noms'); } else chk('razon');
   if(!ok) showToast('Completa los campos obligatorios ✱','warn');
   return ok;
 }
 
-/* ── ARMAR BODY TERCEROS ── */
+/* ── BODY TERCEROS ── */
 function armarBodyTercero() {
-  const tipo = gv('tipoId'), esN = tipo === 'N';
-  const nit = esN ? gv('nit') : gv('docN'), dVal = esN ? gv('dv') : '';
-  const nat = gv('tipoT') === '1';
-  const a1 = nat ? gv('ap1') : '', a2 = nat ? gv('ap2') : '', nms = nat ? gv('noms') : '';
-  const razon = nat ? [a1,a2,nms].filter(Boolean).join(' ') : gv('razon');
-  const ne = gv('nomE') || razon || [a1,a2,nms].filter(Boolean).join(' ');
+  const tipo=gv('tipoId'), esN=tipo==='N';
+  const nit=esN?gv('nit'):gv('docN'), dVal=esN?gv('dv'):'';
+  const nat=gv('tipoT')==='1';
+  const a1=nat?gv('ap1'):'', a2=nat?gv('ap2'):'', nms=nat?gv('noms'):'';
+  const razon=nat?[a1,a2,nms].filter(Boolean).join(' '):gv('razon');
+  const ne=gv('nomE')||razon||[a1,a2,nms].filter(Boolean).join(' ');
   return {
-    "Inicial": [{"F_CIA": CIA}],
-    "Terceros": [{
-      "F_CIA": CIA,
-      "F_ACTUALIZA_REG": mUpd ? "1" : "0",
-      "F200_ID": nit,
-      "F200_NIT": nit,
-      "F200_DV_NIT": dVal,
-      "F200_ID_TIPO_IDENT": tipo,
-      "F200_IND_TIPO_TERCERO": gv('tipoT'),
-      "F200_RAZON_SOCIAL": razon,
-      "F200_APELLIDO1": a1,
-      "F200_APELLIDO2": a2,
-      "F200_NOMBRES": nms,
-      "F200_NOMBRE_EST": ne,
-      "F200_IND_CLIENTE": inds.cli ? "1" : "0",
-      "F200_IND_PROVEEDOR": inds.prov ? "1" : "0",
-      "F200_IND_EMPLEADO": inds.emp ? "1" : "0",
-      "F200_IND_ACCIONISTA": "0",
-      "F200_IND_OTROS": "0",
-      "F200_IND_INTERNO": "0",
-      "F015_CONTACTO": gv('ctc'),
-      "F015_DIRECCION1": gv('dir'),
-      "F015_DIRECCION2": "CANAL:" + canal,
-      "F015_DIRECCION3": "ASESOR:" + (asesor ? asesor.c : ''),
-      "F015_ID_PAIS": PAIS,
-      "F015_ID_DEPTO": gv('dep'),
-      "F015_ID_CIUDAD": gv('ciu').slice(-3),
-      "F015_ID_BARRIO": "",
-      "F015_TELEFONO": gv('tel'),
-      "F015_FAX": "",
-      "F015_COD_POSTAL": "",
-      "F015_EMAIL": gv('mail'),
-      "F015_CELULAR": gv('cel'),
-      "F200_FECHA_NACIMIENTO": "20251231",
-      "F200_ID_CIIU": "0010",
-      "F200_IND_NO_DOMICILIADO": "0",
-      "F200_IND_ESTADO": "1"
+    "Inicial":[{"F_CIA":CIA}],
+    "Terceros":[{
+      "F_CIA":CIA,"F_ACTUALIZA_REG":mUpd?"1":"0",
+      "F200_ID":nit,"F200_NIT":nit,"F200_DV_NIT":dVal,
+      "F200_ID_TIPO_IDENT":tipo,"F200_IND_TIPO_TERCERO":gv('tipoT'),
+      "F200_RAZON_SOCIAL":razon,"F200_APELLIDO1":a1,"F200_APELLIDO2":a2,"F200_NOMBRES":nms,
+      "F200_NOMBRE_EST":ne,
+      "F200_IND_CLIENTE":inds.cli?"1":"0","F200_IND_PROVEEDOR":inds.prov?"1":"0",
+      "F200_IND_EMPLEADO":inds.emp?"1":"0","F200_IND_ACCIONISTA":"0","F200_IND_OTROS":"0","F200_IND_INTERNO":"0",
+      "F015_CONTACTO":gv('ctc'),"F015_DIRECCION1":gv('dir'),
+      "F015_DIRECCION2":"CANAL:"+canal,"F015_DIRECCION3":"ASESOR:"+(asesor?asesor.c:''),
+      "F015_ID_PAIS":PAIS,"F015_ID_DEPTO":gv('dep'),"F015_ID_CIUDAD":gv('ciu').slice(-3),
+      "F015_ID_BARRIO":"","F015_TELEFONO":gv('tel'),"F015_FAX":"","F015_COD_POSTAL":"",
+      "F015_EMAIL":gv('mail'),"F015_CELULAR":gv('cel'),
+      "F200_FECHA_NACIMIENTO":"20251231","F200_ID_CIIU":"0010",
+      "F200_IND_NO_DOMICILIADO":"0","F200_IND_ESTADO":"1"
     }],
-    "Final": [{"F_CIA": CIA}]
+    "Final":[{"F_CIA":CIA}]
   };
 }
 
-/* ── ARMAR BODY CLIENTES (Sucursal) ── */
+/* ── BODY CLIENTES (Sucursal) ── */
 function armarBodyCliente(nit, nombre) {
-  // Tipo cliente: Tradicional → 0001 (CLIENTES NACIONALES), Digital → 02 (CANAL DIGITAL)
-  const tipoCli = canal === 'DIGITAL' ? '02' : '0001';
-  // Fecha de ingreso dinámica AAAAMMDD
+  const tipoCli = canal==='DIGITAL' ? '02' : '0001';
   const hoy = new Date();
   const fechaIngreso = `${hoy.getFullYear()}${String(hoy.getMonth()+1).padStart(2,'0')}${String(hoy.getDate()).padStart(2,'0')}`;
   return {
-    "Inicial": [{"F_CIA": CIA}],
-    "Clientes": [{
-      "F_CIA": CIA,
-      "F_ACTUALIZA_REG": mUpd ? "1" : "0",
-      "F201_ID_TERCERO": nit,
-      "F201_ID_SUCURSAL": "001",
-      "F201_IND_ESTADO_ACTIVO": "1",
-      "F201_DESCRIPCION_SUCURSAL": nombre,
-      "F201_ID_MONEDA": "COP",
-      "F201_ID_VENDEDOR": asesor ? asesor.c : "",
-      "F201_IND_CALIFICACION": "A",
-      "F201_ID_COND_PAGO": "",
-      "F201_DIAS_GRACIA": "0",
-      "F201_CUPO_CREDITO": "+000000000000000.00",
-      "F201_ID_CLIENTE_CORP": "",
-      "F201_ID_SUCURSAL_CORP": "",
-      "F201_ID_TIPO_CLI": tipoCli,
-      "F201_ID_GRUPO_DSCTO": "",
-      "F201_ID_LISTA_PRECIO": "001",
-      "F201_IND_PEDIDO_BACKORDER": "0",
-      "F201_PORC_EXCESO_VENTA": "0.00",
-      "F201_PORC_MIN_MARGEN": "0.00",
-      "F201_PORC_MAX_MARGEN": "0.00",
-      "F201_IND_BLOQUEADO": "1",
-      "F201_IND_BLOQUEO_CUPO": "0",
-      "F201_IND_BLOQUEO_MORA": "0",
-      "F201_IND_FACTURA_UNIFICADA": "0",
-      "F201_ID_CO_FACTURA": "",
-      "F201_NOTAS": "",
-      "F015_CONTACTO": gv('ctc'),
-      "F015_DIRECCION1": gv('dir'),
-      "F015_DIRECCION2": "",
-      "F015_DIRECCION3": "",
-      "F015_ID_PAIS": PAIS,
-      "F015_ID_DEPTO": gv('dep'),
-      "F015_ID_CIUDAD": gv('ciu').slice(-3),
-      "F015_ID_BARRIO": "",
-      "F015_TELEFONO": gv('tel'),
-      "F015_FAX": "",
-      "F015_COD_POSTAL": "",
-      "F015_EMAIL": gv('mail'),
-      "F201_FECHA_INGRESO": fechaIngreso,
-      "F201_ID_CO_MOVTO_FACTURA": "",
-      "F201_ID_UN_MOVTO_FACTURA": "",
-      "F201_ID_PARAMETRO_EDI": "",
-      "F201_CODIGO_EAN": "",
-      "f201_fecha_cupo": "",
-      "f201_porc_tolerancia": "0",
-      "f201_dia_maximo_factura": "0",
-      "f201_id_motivo_bloqueo": "",
-      "f201_id_cobrador": "",
-      "f201_ind_compromiso_um_emp": "0",
-      "f201_ind_anticipo_terc_corp": "0",
-      "f015_celular": gv('cel'),
-      "f201_valida_cupo_despacho": "0",
-      "f201_id_portafolio_edi": "",
-      "f201_frecuencia_entrega": "1111111",
-      "f201_id_cia_cliente_corp": "0",
-      "f201_ind_valida_cartera_des": "0",
-      "f201_ind_exceso_venta_adic": "0"
+    "Inicial":[{"F_CIA":CIA}],
+    "Clientes":[{
+      "F_CIA":CIA,"F_ACTUALIZA_REG":mUpd?"1":"0",
+      "F201_ID_TERCERO":nit,"F201_ID_SUCURSAL":"001",
+      "F201_IND_ESTADO_ACTIVO":"1","F201_DESCRIPCION_SUCURSAL":nombre,
+      "F201_ID_MONEDA":"COP","F201_ID_VENDEDOR":asesor?asesor.c:"",
+      "F201_IND_CALIFICACION":"A","F201_ID_COND_PAGO":"","F201_DIAS_GRACIA":"0",
+      "F201_CUPO_CREDITO":"+000000000000000.00","F201_ID_CLIENTE_CORP":"","F201_ID_SUCURSAL_CORP":"",
+      "F201_ID_TIPO_CLI":tipoCli,"F201_ID_GRUPO_DSCTO":"","F201_ID_LISTA_PRECIO":"001",
+      "F201_IND_PEDIDO_BACKORDER":"0","F201_PORC_EXCESO_VENTA":"0.00",
+      "F201_PORC_MIN_MARGEN":"0.00","F201_PORC_MAX_MARGEN":"0.00",
+      "F201_IND_BLOQUEADO":"1","F201_IND_BLOQUEO_CUPO":"0","F201_IND_BLOQUEO_MORA":"0",
+      "F201_IND_FACTURA_UNIFICADA":"0","F201_ID_CO_FACTURA":"","F201_NOTAS":"",
+      "F015_CONTACTO":gv('ctc'),"F015_DIRECCION1":gv('dir'),
+      "F015_DIRECCION2":"","F015_DIRECCION3":"",
+      "F015_ID_PAIS":PAIS,"F015_ID_DEPTO":gv('dep'),"F015_ID_CIUDAD":gv('ciu').slice(-3),
+      "F015_ID_BARRIO":"","F015_TELEFONO":gv('tel'),"F015_FAX":"","F015_COD_POSTAL":"",
+      "F015_EMAIL":gv('mail'),"F201_FECHA_INGRESO":fechaIngreso,
+      "F201_ID_CO_MOVTO_FACTURA":"","F201_ID_UN_MOVTO_FACTURA":"",
+      "F201_ID_PARAMETRO_EDI":"","F201_CODIGO_EAN":"",
+      "f201_fecha_cupo":"","f201_porc_tolerancia":"0","f201_dia_maximo_factura":"0",
+      "f201_id_motivo_bloqueo":"","f201_id_cobrador":"",
+      "f201_ind_compromiso_um_emp":"0","f201_ind_anticipo_terc_corp":"0",
+      "f015_celular":gv('cel'),"f201_valida_cupo_despacho":"0",
+      "f201_id_portafolio_edi":"","f201_frecuencia_entrega":"1111111",
+      "f201_id_cia_cliente_corp":"0","f201_ind_valida_cartera_des":"0","f201_ind_exceso_venta_adic":"0"
     }],
-    "Final": [{"F_CIA": CIA}]
+    "Final":[{"F_CIA":CIA}]
   };
 }
 
-/* ── ENVÍO PRINCIPAL ── */
+/* ── ENVÍO ── */
 async function enviar() {
   if(!asesor){ cambiarAsesor(); return; }
   if(!validar()) return;
-
   const btn = document.getElementById('bGo');
-  btn.classList.add('loading'); btn.disabled = true;
-
+  btn.classList.add('loading'); btn.disabled=true;
   const bodyT = armarBodyTercero();
-  const nit = bodyT.Terceros[0].F200_NIT;
-  const nombre = bodyT.Terceros[0].F200_NOMBRE_EST;
-
-  // Sin conexión: guardar para sync posterior (solo body del tercero, igual que antes)
-  if(!navigator.onLine) {
-    saveOff(bodyT, nombre);
-    btn.classList.remove('loading'); btn.disabled = false;
-    showToast('Sin conexión — guardado para enviar después','warn');
-    return;
-  }
-
-  let resTercero = null, resCliente = null;
-
+  const nit   = bodyT.Terceros[0].F200_NIT;
+  const nombre= bodyT.Terceros[0].F200_NOMBRE_EST;
+  if(!navigator.onLine){ saveOff(bodyT,nombre); btn.classList.remove('loading'); btn.disabled=false; showToast('Sin conexión — guardado para enviar después','warn'); return; }
+  let resTercero=null, resCliente=null;
   try {
-    // ── LLAMADA 1: Crear Tercero ──
-    const r1 = await fetch(WH + '?doc=terceros', {
-      method: 'POST',
-      headers: {'Content-Type':'application/json'},
-      body: JSON.stringify(bodyT)
-    });
-    try { resTercero = await r1.json(); } catch(e) { resTercero = {}; }
-
-    const okTercero = resTercero.codigo === 0;
-
-    if(!okTercero) {
-      // Si el tercero falla, no intentar la sucursal
-      const msg = resTercero.mensaje || resTercero.body?.mensaje || 'Verifica los datos';
-      showToast('Error SIESA (Tercero): ' + msg, 'err');
-      btn.classList.remove('loading'); btn.disabled = false;
-      return;
+    const r1 = await fetch(WH+'?doc=terceros',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(bodyT)});
+    try{ resTercero=await r1.json(); }catch(e){ resTercero={}; }
+    if(resTercero.codigo!==0){ showToast('Error SIESA (Tercero): '+(resTercero.mensaje||resTercero.body?.mensaje||'Verifica los datos'),'err'); btn.classList.remove('loading'); btn.disabled=false; return; }
+    let okCliente=false, msgCliente='';
+    if(inds.cli){
+      const bodyC=armarBodyCliente(nit,nombre);
+      try{
+        const r2=await fetch(WH+'?doc=clientes',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(bodyC)});
+        try{ resCliente=await r2.json(); }catch(e){ resCliente={}; }
+        okCliente=resCliente.codigo===0;
+        msgCliente=resCliente.mensaje||resCliente.body?.mensaje||'';
+      }catch(e){ okCliente=false; msgCliente='Error de red en sucursal'; }
     }
-
-    // ── LLAMADA 2: Crear Sucursal-Cliente (solo si es cliente) ──
-    let okCliente = false, msgCliente = '';
-    if(inds.cli) {
-      const bodyC = armarBodyCliente(nit, nombre);
-      try {
-        const r2 = await fetch(WH + '?doc=clientes', {
-          method: 'POST',
-          headers: {'Content-Type':'application/json'},
-          body: JSON.stringify(bodyC)
-        });
-        try { resCliente = await r2.json(); } catch(e) { resCliente = {}; }
-        okCliente = resCliente.codigo === 0;
-        msgCliente = resCliente.mensaje || resCliente.body?.mensaje || '';
-      } catch(e) {
-        okCliente = false;
-        msgCliente = 'Error de red en sucursal';
-      }
-    }
-
-    // ── MOSTRAR MODAL ──
-    const accion = mUpd ? 'actualizado' : 'creado';
-    document.getElementById('mTitle').textContent = mUpd ? '✅ Cliente actualizado' : '✅ ¡Cliente registrado en SIESA!';
-    document.getElementById('mInfo').textContent = `${nombre} fue ${accion} exitosamente.`;
-
-    // Chips de estado
-    const chipsEl = document.getElementById('mChips');
-    let chipsHTML = `<span class="m-chip-st mcs-ok">✓ Tercero ${accion}</span>`;
-    if(inds.cli) {
-      chipsHTML += okCliente
-        ? `<span class="m-chip-st mcs-ok">✓ Sucursal-Cliente creada</span>`
-        : `<span class="m-chip-st mcs-warn">⚠ Sucursal pendiente${msgCliente ? ': '+msgCliente : ''}</span>`;
-    }
-    chipsEl.innerHTML = chipsHTML;
-
-    // Detalle técnico
-    const tipoCliLabel = canal === 'DIGITAL' ? '02 - CANAL DIGITAL' : '0001 - NACIONALES';
-    document.getElementById('mDetail').textContent =
-      `NIT: ${nit}\n` +
-      `Asesor/Vendedor: ${asesor.n} (${asesor.c})\n` +
-      `Canal: ${canal}  →  Tipo cliente: ${tipoCliLabel}\n` +
-      `Lista de precios: 001 - LISTA MOSTRADOR\n` +
-      `Fecha: ${new Date().toLocaleString('es-CO')}\n` +
-      `Modo: ${mUpd ? 'Actualización' : 'Creación'}`;
-
+    const accion=mUpd?'actualizado':'creado';
+    document.getElementById('mTitle').textContent=mUpd?'✅ Cliente actualizado':'✅ ¡Cliente registrado en SIESA!';
+    document.getElementById('mInfo').textContent=`${nombre} fue ${accion} exitosamente.`;
+    const chipsEl=document.getElementById('mChips');
+    let chipsHTML=`<span class="m-chip-st mcs-ok">✓ Tercero ${accion}</span>`;
+    if(inds.cli) chipsHTML+=okCliente?`<span class="m-chip-st mcs-ok">✓ Sucursal-Cliente creada</span>`:`<span class="m-chip-st mcs-warn">⚠ Sucursal pendiente${msgCliente?': '+msgCliente:''}</span>`;
+    chipsEl.innerHTML=chipsHTML;
+    const tipoCliLabel=canal==='DIGITAL'?'02 - CANAL DIGITAL':'0001 - NACIONALES';
+    document.getElementById('mDetail').textContent=`NIT: ${nit}\nAsesor/Vendedor: ${asesor.n} (${asesor.c})\nCanal: ${canal}  →  Tipo cliente: ${tipoCliLabel}\nLista de precios: 001 - LISTA MOSTRADOR\nFecha: ${new Date().toLocaleString('es-CO')}\nModo: ${mUpd?'Actualización':'Creación'}`;
     document.getElementById('modal').classList.add('open');
-    document.getElementById('pFill').style.width = '100%';
-
-  } catch(e) {
-    saveOff(bodyT, nombre);
-    showToast('Error de red — guardado para sincronizar','warn');
-  } finally {
-    btn.classList.remove('loading'); btn.disabled = false;
-  }
+    document.getElementById('pFill').style.width='100%';
+  } catch(e){ saveOff(bodyT,nombre); showToast('Error de red — guardado para sincronizar','warn'); }
+  finally{ btn.classList.remove('loading'); btn.disabled=false; }
 }
 
 /* ── MODAL / RESET ── */
-function cerrarModal() { document.getElementById('modal').classList.remove('open'); }
-function nuevoReg() {
-  cerrarModal(); mUpd = false; canal = ''; clearTimeout(_nitTimer);
-  document.querySelectorAll('.fi').forEach(el => { if(el.tagName==='SELECT') el.selectedIndex=0; else el.value=''; el.classList.remove('err','ok'); });
-  ['bTrad','bDig'].forEach(id => document.getElementById(id).classList.remove('st','sd'));
+function cerrarModal(){ document.getElementById('modal').classList.remove('open'); }
+function nuevoReg(){
+  cerrarModal(); mUpd=false; canal=''; clearTimeout(_vTimer);
+  document.querySelectorAll('.fi').forEach(el=>{ if(el.tagName==='SELECT') el.selectedIndex=0; else el.value=''; el.classList.remove('err','ok','autofilled'); });
+  ['bTrad','bDig'].forEach(id=>document.getElementById(id).classList.remove('st','sd'));
   inds.cli=true; inds.prov=false; inds.emp=false;
   document.getElementById('iCli').classList.add('active');
   document.getElementById('iProv').classList.remove('active');
   document.getElementById('iEmp').classList.remove('active');
   document.getElementById('bJur').classList.add('active');
   document.getElementById('bNat').classList.remove('active');
-  document.getElementById('tipoT').value = '2';
-  document.getElementById('rNit').style.display = 'none';
-  document.getElementById('rDoc').style.display = 'none';
-  document.getElementById('rNat').style.display = 'none';
-  document.getElementById('rRaz').style.display = 'block';
+  document.getElementById('tipoT').value='2';
+  document.getElementById('rNit').style.display='none';
+  document.getElementById('rDoc').style.display='none';
+  document.getElementById('rNat').style.display='none';
+  document.getElementById('rRaz').style.display='block';
   document.getElementById('alertaE').classList.remove('show');
-  document.getElementById('nIco').style.display = 'none';
-  document.getElementById('bGo').querySelector('.bt').textContent = '💾 Guardar cliente en SIESA';
-  document.getElementById('pFill').style.width = '0%';
-  document.getElementById('mChips').innerHTML = '';
+  ['vSpinNit','vSpinDoc','vIcoNit','vIcoDoc'].forEach(id=>{ const e=document.getElementById(id); if(e) e.style.display='none'; });
+  ['vBadgeNit','vBadgeDoc'].forEach(id=>{ const e=document.getElementById(id); if(e) e.classList.remove('show'); });
+  document.getElementById('bGo').querySelector('.bt').textContent='💾 Guardar cliente en SIESA';
+  document.getElementById('pFill').style.width='0%';
+  document.getElementById('mChips').innerHTML='';
   document.querySelector('.f-scroll')?.scrollTo(0,0);
 }
 
 /* ── TOAST ── */
-function showToast(msg, tipo='ok') {
-  const t = document.getElementById('toastEl');
-  const ic = {ok:'✅', err:'❌', warn:'⚠️'};
-  t.textContent = `${ic[tipo]||''} ${msg}`; t.className = `toastEl ${tipo} show`;
-  setTimeout(() => t.classList.remove('show'), 3400);
+function showToast(msg, tipo='ok'){
+  const t=document.getElementById('toastEl');
+  const ic={ok:'✅',err:'❌',warn:'⚠️'};
+  t.textContent=`${ic[tipo]||''} ${msg}`; t.className=`toastEl ${tipo} show`;
+  setTimeout(()=>t.classList.remove('show'),3400);
 }
 
 /* ── OFFLINE / SYNC ── */
-function saveOff(body, nombre) {
-  const p = JSON.parse(localStorage.getItem('jm_pend')||'[]');
-  p.push({body, nombre, asesor:asesor?.n, canal, fecha:new Date().toISOString()});
-  localStorage.setItem('jm_pend', JSON.stringify(p)); rPend();
-}
-function rPend() {
-  const p = JSON.parse(localStorage.getItem('jm_pend')||'[]');
-  ['spHub','spForm'].forEach(id => { const s = document.getElementById(id); if(s) s.style.display = p.length ? 'block' : 'none'; });
-  ['pListHub','pListForm'].forEach(id => { const el = document.getElementById(id); if(el) el.innerHTML = p.map(x => `• ${x.nombre} — ${x.asesor} — ${new Date(x.fecha).toLocaleString('es-CO')}`).join('<br>'); });
-}
-async function sync() {
-  const p = JSON.parse(localStorage.getItem('jm_pend')||'[]');
-  if(!p.length){ showToast('No hay registros pendientes','ok'); return; }
-  if(!navigator.onLine){ showToast('Sin conexión','warn'); return; }
-  let ok = 0, fail = 0;
-  for(const item of p) {
-    try {
-      const r = await fetch(WH + '?doc=terceros', {method:'POST', headers:{'Content-Type':'application/json'}, body:JSON.stringify(item.body)});
-      const d = await r.json().catch(() => ({}));
-      d.codigo === 0 ? ok++ : fail++;
-    } catch { fail++; }
-  }
-  if(ok > 0) localStorage.removeItem('jm_pend');
-  rPend(); showToast(`Sincronizados: ${ok} ✓${fail ? ` · ${fail} con error` : ''}`, fail ? 'warn' : 'ok');
-}
+function saveOff(body,nombre){ const p=JSON.parse(localStorage.getItem('jm_pend')||'[]'); p.push({body,nombre,asesor:asesor?.n,canal,fecha:new Date().toISOString()}); localStorage.setItem('jm_pend',JSON.stringify(p)); rPend(); }
+function rPend(){ const p=JSON.parse(localStorage.getItem('jm_pend')||'[]'); ['spHub','spForm'].forEach(id=>{ const s=document.getElementById(id); if(s) s.style.display=p.length?'block':'none'; }); ['pListHub','pListForm'].forEach(id=>{ const el=document.getElementById(id); if(el) el.innerHTML=p.map(x=>`• ${x.nombre} — ${x.asesor} — ${new Date(x.fecha).toLocaleString('es-CO')}`).join('<br>'); }); }
+async function sync(){ const p=JSON.parse(localStorage.getItem('jm_pend')||'[]'); if(!p.length){ showToast('No hay registros pendientes','ok'); return; } if(!navigator.onLine){ showToast('Sin conexión','warn'); return; } let ok=0,fail=0; for(const item of p){ try{ const r=await fetch(WH+'?doc=terceros',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(item.body)}); const d=await r.json().catch(()=>({})); d.codigo===0?ok++:fail++; }catch{ fail++; } } if(ok>0) localStorage.removeItem('jm_pend'); rPend(); showToast(`Sincronizados: ${ok} ✓${fail?` · ${fail} con error`:''}`,fail?'warn':'ok'); }
+window.addEventListener('offline',()=>document.getElementById('offB').classList.add('show'));
+window.addEventListener('online',()=>{ document.getElementById('offB').classList.remove('show'); sync(); });
 
-/* ── EVENTS ── */
-window.addEventListener('offline', () => document.getElementById('offB').classList.add('show'));
-window.addEventListener('online', () => { document.getElementById('offB').classList.remove('show'); sync(); });
-
-/* ── ANTIGRAVITY CANVAS ── */
-function initCanvas() {
-  const canvas = document.getElementById('wCanvas');
-  if(!canvas) return;
-  const ctx = canvas.getContext('2d');
-  let W, H, parts = [];
-  function resize(){ W = canvas.width = canvas.offsetWidth; H = canvas.height = canvas.offsetHeight; }
-  resize();
-  window.addEventListener('resize', () => { resize(); });
-  const colors = ['rgba(184,134,11,','rgba(212,160,23,','rgba(11,31,74,','rgba(30,58,110,'];
-  function mkPart() {
-    return { x:Math.random()*W, y:H+Math.random()*60, r:Math.random()*4+1.5, vx:(Math.random()-.5)*.4, vy:-(Math.random()*.5+.2), alpha:Math.random()*.5+.15, color:colors[Math.floor(Math.random()*colors.length)], wobble:Math.random()*Math.PI*2, wobbleSpeed:Math.random()*.015+.005 };
-  }
-  for(let i = 0; i < 55; i++){ const p = mkPart(); p.y = Math.random()*H; parts.push(p); }
-  function draw() {
-    ctx.clearRect(0,0,W,H);
-    const grad = ctx.createLinearGradient(0,H*.45,0,H);
-    grad.addColorStop(0,'rgba(248,246,240,0)'); grad.addColorStop(1,'rgba(248,246,240,0.18)');
-    ctx.fillStyle = grad; ctx.fillRect(0,0,W,H);
-    parts.forEach(p => {
-      p.wobble += p.wobbleSpeed; p.x += p.vx + Math.sin(p.wobble)*0.3; p.y += p.vy;
-      if(p.y < -12 || p.x < -20 || p.x > W+20) Object.assign(p, mkPart());
-      ctx.beginPath(); ctx.arc(p.x,p.y,p.r,0,Math.PI*2);
-      ctx.fillStyle = p.color + p.alpha + ')'; ctx.fill();
-    });
-    requestAnimationFrame(draw);
-  }
-  draw();
-}
+/* ── CANVAS ── */
+function initCanvas(){ const canvas=document.getElementById('wCanvas'); if(!canvas) return; const ctx=canvas.getContext('2d'); let W,H,parts=[]; function resize(){ W=canvas.width=canvas.offsetWidth; H=canvas.height=canvas.offsetHeight; } resize(); window.addEventListener('resize',()=>{ resize(); }); const colors=['rgba(184,134,11,','rgba(212,160,23,','rgba(11,31,74,','rgba(30,58,110,']; function mkPart(){ return{x:Math.random()*W,y:H+Math.random()*60,r:Math.random()*4+1.5,vx:(Math.random()-.5)*.4,vy:-(Math.random()*.5+.2),alpha:Math.random()*.5+.15,color:colors[Math.floor(Math.random()*colors.length)],wobble:Math.random()*Math.PI*2,wobbleSpeed:Math.random()*.015+.005}; } for(let i=0;i<55;i++){ const p=mkPart(); p.y=Math.random()*H; parts.push(p); } function draw(){ ctx.clearRect(0,0,W,H); const grad=ctx.createLinearGradient(0,H*.45,0,H); grad.addColorStop(0,'rgba(248,246,240,0)'); grad.addColorStop(1,'rgba(248,246,240,0.18)'); ctx.fillStyle=grad; ctx.fillRect(0,0,W,H); parts.forEach(p=>{ p.wobble+=p.wobbleSpeed; p.x+=p.vx+Math.sin(p.wobble)*0.3; p.y+=p.vy; if(p.y<-12||p.x<-20||p.x>W+20) Object.assign(p,mkPart()); ctx.beginPath(); ctx.arc(p.x,p.y,p.r,0,Math.PI*2); ctx.fillStyle=p.color+p.alpha+')'; ctx.fill(); }); requestAnimationFrame(draw); } draw(); }
 
 rPend();
 initAsesorSel();
