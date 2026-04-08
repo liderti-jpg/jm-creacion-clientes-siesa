@@ -702,12 +702,12 @@ function selT(v,el){
   document.getElementById('tipoT').value=v;
   document.querySelectorAll('.tb').forEach(b=>b.classList.remove('active'));
   el.classList.add('active');
-  document.getElementById('rRaz').style.display=v==='2'?'none':'block';
-  document.getElementById('rNat').style.display=v==='2'?'block':'none';
+  document.getElementById('rRaz').style.display=v==='1'?'none':'block';
+  document.getElementById('rNat').style.display=v==='1'?'block':'none';
   sNE();
 }
 function tInd(k,el){inds[k]=!inds[k];el.classList.toggle('active',inds[k]);}
-function sNE(){const ne=document.getElementById('nomE');if(ne._m)return;const t=gv('tipoT');ne.value=t==='2'?[gv('ap1'),gv('ap2'),gv('noms')].filter(Boolean).join(' '):gv('razon');}
+function sNE(){const ne=document.getElementById('nomE');if(ne._m)return;const t=gv('tipoT');ne.value=t==='1'?[gv('ap1'),gv('ap2'),gv('noms')].filter(Boolean).join(' '):gv('razon');}
 document.getElementById('nomE').addEventListener('input',function(){this._m=!!this.value;});
 const gv=id=>document.getElementById(id)?.value?.trim()||'';
 const up=el=>el.value=el.value.toUpperCase();
@@ -725,7 +725,7 @@ function onNB(){
   document.getElementById('dv').value=cdv(n);
 }
 function actUpd(){mUpd=true;document.getElementById('alertaE').classList.remove('show');document.getElementById('bGo').querySelector('.bt').textContent='🔄 Actualizar cliente en SIESA';showToast('Modo actualización activado','warn');}
-function upP(){const c=[canal,gv('tipoId'),gv('tipoId')==='N'?gv('nit'):gv('docN'),gv('tipoT')==='2'?gv('ap1'):gv('razon')];document.getElementById('pFill').style.width=Math.round((c.filter(Boolean).length/c.length)*100)+'%';}
+function upP(){const c=[canal,gv('tipoId'),gv('tipoId')==='N'?gv('nit'):gv('docN'),gv('tipoT')==='1'?gv('ap1'):gv('razon')];document.getElementById('pFill').style.width=Math.round((c.filter(Boolean).length/c.length)*100)+'%';}
 document.querySelectorAll('.fi').forEach(e=>e.addEventListener('input',upP));
 function validar(){
   let ok=true;
@@ -738,58 +738,35 @@ function validar(){
   };
   chk('tipoId');
   if(gv('tipoId')==='N')chk('nit');else chk('docN');
-  if(gv('tipoT')==='2'){chk('ap1');chk('noms');}else chk('razon');
+  if(gv('tipoT')==='1'){chk('ap1');chk('noms');}else chk('razon');
   if(!ok)showToast('Completa los campos obligatorios ✱','warn');
   return ok;
 }
 function armarBody(){
   const tipo=gv('tipoId'),esN=tipo==='N';
   const nit=esN?gv('nit'):gv('docN'),dVal=esN?gv('dv'):'';
-  const nat=gv('tipoT')==='2';
+  const nat=gv('tipoT')==='1';
   const a1=nat?gv('ap1'):'',a2=nat?gv('ap2'):'',nms=nat?gv('noms'):'';
   const razon=nat?[a1,a2,nms].filter(Boolean).join(' '):gv('razon');
   const ne=gv('nomE')||razon||[a1,a2,nms].filter(Boolean).join(' ');
-  return {
-    "Inicial": [{"F_CIA": CIA}],
-    "Terceros": [{
-      "F_CIA": CIA,
-      "F_ACTUALIZA_REG": mUpd ? "1" : "0",
-      "F200_ID": nit,
-      "F200_NIT": nit,
-      "F200_DV_NIT": dVal,
-      "F200_ID_TIPO_IDENT": tipo,
-      "F200_IND_TIPO_TERCERO": gv('tipoT'),
-      "F200_RAZON_SOCIAL": razon,
-      "F200_APELLIDO1": a1,
-      "F200_APELLIDO2": a2,
-      "F200_NOMBRES": nms,
-      "F200_NOMBRE_EST": ne,
-      "F200_IND_CLIENTE": inds.cli ? "1" : "0",
-      "F200_IND_PROVEEDOR": inds.prov ? "1" : "0",
-      "F200_IND_EMPLEADO": inds.emp ? "1" : "0",
-      "F200_IND_ACCIONISTA": "0",
-      "F200_IND_OTROS": "0",
-      "F200_IND_INTERNO": "0",
-      "F015_CONTACTO": gv('ctc'),
-      "F015_DIRECCION1": gv('dir'),
-      "F015_DIRECCION2": "CANAL:" + canal,
-      "F015_DIRECCION3": "ASESOR:" + (asesor ? asesor.c : ''),
-      "F015_ID_PAIS": PAIS,
-      "F015_ID_DEPTO": gv('dep'),
-      "F015_ID_CIUDAD": gv('ciu').slice(-3),
-      "F015_ID_BARRIO": "",
-      "F015_TELEFONO": gv('tel'),
-      "F015_FAX": "",
-      "F015_COD_POSTAL": "",
-      "F015_EMAIL": gv('mail'),
-      "F015_CELULAR": gv('cel'),
-      "F200_FECHA_NACIMIENTO": "20251231",
-      "F200_ID_CIIU": "0010",
-      "F200_IND_NO_DOMICILIADO": "0",
-      "F200_IND_ESTADO": "1"
-    }],
-    "Final": [{"F_CIA": CIA}]
-  };
+  // Fecha nacimiento hardcodeada - requerida por SIESA
+  const fechaNac='19000101';
+  return{"Inicial":[{"F_CIA":CIA}],"Terceros":[{
+    "F_CIA":CIA,"F_ACTUALIZA_REG":mUpd?"1":"0",
+    "F200_ID":nit,"F200_NIT":nit,"F200_DV_NIT":dVal,
+    "F200_ID_TIPO_IDENT":tipo,"F200_IND_TIPO_TERCERO":gv('tipoT'),
+    "F200_RAZON_SOCIAL":razon,"F200_APELLIDO1":a1,"F200_APELLIDO2":a2,
+    "F200_NOMBRES":nms,"F200_NOMBRE_EST":ne,
+    "F200_IND_CLIENTE":inds.cli?"1":"0","F200_IND_PROVEEDOR":inds.prov?"1":"0",
+    "F200_IND_EMPLEADO":inds.emp?"1":"0","F200_IND_ACCIONISTA":"0",
+    "F200_IND_OTROS":"0","F200_IND_INTERNO":"0",
+    "F015_CONTACTO":gv('ctc'),"F015_DIRECCION1":gv('dir'),
+    "F015_DIRECCION2":`CANAL:${canal}`,"F015_DIRECCION3":`ASESOR:${asesor?.c||''}`,
+    "F015_ID_PAIS":PAIS,"F015_ID_DEPTO":gv('dep'),"F015_ID_CIUDAD":gv('ciu'),
+    "F015_ID_BARRIO":"","F015_TELEFONO":gv('tel'),"F015_FAX":"","F015_COD_POSTAL":"",
+    "F015_EMAIL":gv('mail'),"F200_FECHA_NACIMIENTO":fechaNac,"F200_ID_CIIU":"",
+    "F200_IND_NO_DOMICILIADO":0,"F200_IND_ESTADO":1,"F015_CELULAR":gv('cel')
+  }],"Final":[{"F_CIA":CIA}]};
 }
 async function enviar(){
   if(!asesor){cambiarAsesor();return;}
