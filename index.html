@@ -776,7 +776,7 @@ function armarBody(){
       "F015_DIRECCION3": "ASESOR:" + (asesor ? asesor.c : ''),
       "F015_ID_PAIS": PAIS,
       "F015_ID_DEPTO": gv('dep'),
-      "F015_ID_CIUDAD": gv('ciu'),
+      "F015_ID_CIUDAD": gv('ciu').slice(-3),
       "F015_ID_BARRIO": "",
       "F015_TELEFONO": gv('tel'),
       "F015_FAX": "",
