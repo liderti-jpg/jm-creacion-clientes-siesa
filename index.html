@@ -495,10 +495,10 @@ select.fi{background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.o
         <div class="ff" id="rTipoT">
           <label>Tipo de persona <span class="req">*</span></label>
           <div class="tg">
-            <div class="tb active" id="bJur" onclick="selT('1',this)"><span class="ti">🏢</span><span class="tl">Jurídica</span></div>
-            <div class="tb" id="bNat" onclick="selT('2',this)"><span class="ti">👤</span><span class="tl">Natural</span></div>
+            <div class="tb active" id="bJur" onclick="selT('2',this)"><span class="ti">🏢</span><span class="tl">Jurídica</span></div>
+            <div class="tb" id="bNat" onclick="selT('1',this)"><span class="ti">👤</span><span class="tl">Natural</span></div>
           </div>
-          <input type="hidden" id="tipoT" value="1">
+          <input type="hidden" id="tipoT" value="2">
         </div>
       </div>
     </div>
@@ -826,7 +826,7 @@ function nuevoReg(){
   document.getElementById('iEmp').classList.remove('active');
   document.getElementById('bJur').classList.add('active');
   document.getElementById('bNat').classList.remove('active');
-  document.getElementById('tipoT').value='1';
+  document.getElementById('tipoT').value='2';
   document.getElementById('rNit').style.display='none';
   document.getElementById('rDoc').style.display='none';
   document.getElementById('rNat').style.display='none';
